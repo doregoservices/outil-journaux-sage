@@ -1,0 +1,46 @@
+INSTALLATION SUR WINDOWS — OUTIL JOURNAUX SAGE
+================================================================================
+
+Vous avez besoin de deux choses sur l'ordinateur :
+
+   1. Python 3 (gratuit) : https://www.python.org/downloads/windows/
+      Pendant l'installation, cochez IMPÉRATIVEMENT la case
+      « Add python.exe to PATH », puis cliquez sur Install Now.
+
+   2. L'outil : copiez le dossier entier (celui qui contient app.py,
+      Lancer-l-outil.bat et le dossier moteur) sur votre disque, par exemple
+      dans C:\OutilJournaux.
+
+MISE EN ROUTE
+--------------------------------------------------------------------------------
+   1. Double-cliquez sur « Lancer-l-outil.bat ».
+   2. La première fois, la fenêtre noire installe 4 composants (flask, openpyxl,
+      pypdf, pdfplumber). Il faut internet, cela prend 1 à 3 minutes.
+   3. Le navigateur s'ouvre sur http://127.0.0.1:5000 : l'outil est prêt.
+   4. Laissez la fenêtre noire ouverte pendant que vous travaillez.
+      Pour arrêter l'outil, fermez cette fenêtre.
+
+Ensuite, chaque jour : double-cliquez sur « Lancer-l-outil.bat », c'est tout.
+
+SI QUELQUE CHOSE NE VA PAS
+--------------------------------------------------------------------------------
+« Python n'est pas installé »        -> refaites l'étape 1 (cochez bien PATH).
+La fenêtre se ferme toute seule      -> ouvrez une invite de commandes dans le
+                                        dossier et tapez : python app.py
+                                        (vous verrez le message d'erreur exact).
+Le navigateur affiche une erreur     -> attendez 5 secondes et rechargez la page
+                                        (le démarrage prend quelques secondes).
+Vous voulez repartir de zéro         -> supprimez le dossier « .venv » et
+                                        relancez « Lancer-l-outil.bat ».
+Vos journaux sont ici                -> dossier « sortie », un sous-dossier par
+                                        génération (date et heure).
+
+OÙ SONT MES FICHIERS
+--------------------------------------------------------------------------------
+   regles\     les 3 profils de comptes (à modifier dans Excel sans peur :
+               gardez une copie avant de relancer preparer_presets.py)
+   travail\    les derniers fichiers que vous avez déposés
+   sortie\     tout ce que l'outil a produit
+
+Un PDF scanné (photo de facture) n'est pas lisible par l'outil : utilisez le PDF
+téléchargé depuis la FNE ou l'export Excel « Mes factures ».

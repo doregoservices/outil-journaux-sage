@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outil Journaux Sage — caisse · FNE · paie · banque</title>
+<style>
+  :root{--bleu:#1f3864;--bleu2:#2f5597;--or:#c9a227;--vert:#1e7b45;--rouge:#b3261e;--gris:#f2f4f8;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Segoe UI,system-ui,Roboto,Arial,sans-serif;color:#1a1a1a;background:#eef1f6}
+  header{background:var(--bleu);color:#fff;padding:18px 24px}
+  header h1{margin:0;font-size:20px;letter-spacing:.3px}
+  header p{margin:4px 0 0;font-size:13px;opacity:.85}
+  .page{max-width:1180px;margin:0 auto;padding:18px 16px 60px}
+  .carte{background:#fff;border-radius:10px;box-shadow:0 1px 6px rgba(20,30,60,.10);padding:18px;margin-bottom:16px}
+  .carte h2{margin:0 0 12px;font-size:16px;color:var(--bleu)}
+  #zone{border:2.5px dashed var(--bleu2);border-radius:12px;padding:34px 20px;text-align:center;background:#fbfcfe;cursor:pointer;transition:.15s}
+  #zone.sur{background:#eaf0fb;border-color:var(--or)}
+  #zone b{font-size:16px;color:var(--bleu2)}
+  #zone span{display:block;font-size:13px;color:#555;margin-top:6px}
+  .bouton{background:var(--bleu);color:#fff;border:0;border-radius:8px;padding:12px 22px;font-size:15px;cursor:pointer}
+  .bouton:hover{background:var(--bleu2)}
+  .bouton.or{background:var(--or);color:#2b2b2b;font-weight:600}
+  .bouton[disabled]{opacity:.45;cursor:not-allowed}
+  .petit{font-size:12.5px;color:#666}
+  table{border-collapse:collapse;width:100%;font-size:12.5px}
+  th{background:var(--bleu);color:#fff;text-align:left;padding:7px 8px;position:sticky;top:0}
+  td{border-bottom:1px solid #e6e9f0;padding:5px 8px}
+  tr:nth-child(even) td{background:#fafbfe}
+  .debit{text-align:right;color:var(--rouge);white-space:nowrap}
+  .credit{text-align:right;color:var(--vert);white-space:nowrap}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  input.compte{width:92px;font:12px monospace;border:1px solid #cbd3e1;border-radius:4px;padding:3px 5px}
+  input.champ{width:86px;text-align:right;font:12px monospace;border:1px solid #cbd3e1;border-radius:4px;padding:3px 5px}
+  input.alerte{border-color:var(--or);background:#fffdf3}
+  .onglets{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .onglet{padding:8px 14px;border-radius:8px 8px 0 0;background:#e9edf5;cursor:pointer;font-size:13.5px;border:0}
+  .onglet.actif{background:#fff;color:var(--bleu);font-weight:600;box-shadow:0 -2px 0 var(--or) inset}
+  .grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:12px}
+  .kpi{background:var(--gris);border-radius:9px;padding:12px;border-left:4px solid var(--bleu2)}
+  .kpi b{display:block;font-size:19px;color:var(--bleu);margin-top:3px}
+  .kpi span{font-size:12px;color:#56607a;text-transform:uppercase;letter-spacing:.4px}
+  .kpi.ok{border-color:var(--vert)} .kpi.ko{border-color:var(--rouge)}
+  .etiquette{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;background:#e6ebf7;color:var(--bleu);margin-right:4px}
+  .etiquette.or{background:#fdf3d7;color:#8a6d00} .etiquette.rouge{background:#fde7e6;color:var(--rouge)}
+  .etiquette.vert{background:#e4f5ea;color:var(--vert)}
+  .alerte{background:#fff8e6;border-left:4px solid var(--or);padding:9px 12px;border-radius:6px;margin-bottom:7px;font-size:13px}
+  .scroll{max-height:520px;overflow:auto;border:1px solid #e6e9f0;border-radius:8px}
+  .fichiers{display:flex;flex-wrap:wrap;gap:8px}
+  .fic{background:#eef2fa;border-radius:8px;padding:8px 10px;font-size:12.5px;display:flex;gap:8px;align-items:center}
+  select{border:1px solid #cbd3e1;border-radius:5px;padding:3px 6px;font-size:12px}
+  .lien{color:var(--bleu2);text-decoration:none} .lien:hover{text-decoration:underline}
+  code{background:#f0f2f7;padding:1px 5px;border-radius:4px;font-size:12px}
+  .masque{display:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>Outil JOURNAUX SAGE</h1>
+  <p>Caisse (Excel/CSV) · Factures FNE (PDF) · Bulletins de paie (PDF ou modèle DGI) · Relevés bancaires (PDF/Excel)
+     &nbsp;→&nbsp; journaux SYSCOHADA prêts pour Sage 100</p>
+</header>
+
+<div class="page">
+  <div class="carte">
+    <div id="zone">
+      <b>Déposez ici vos fichiers</b>
+      <span>ou cliquez pour choisir · vous pouvez en mettre plusieurs à la fois (caisse, factures, bulletins, relevés)</span>
+    </div>
+    <input type="file" id="choix" multiple class="masque">
+    <div style="margin-top:14px;display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap">
+      <label class="petit">Écritures du<br><input type="date" id="dmin" class="compte" style="width:140px"></label>
+      <label class="petit">au<br><input type="date" id="dmax" class="compte" style="width:140px"></label>
+      <label class="petit">Profil de règles<br><select id="profil" class="compte" style="width:190px"></select></label>
+      <button class="bouton" id="btnRelire" style="padding:8px 16px;font-size:13.5px">Relire les fichiers</button>
+      <span class="petit">Laissez vide pour tout prendre. Exemple : du 01/01/2026 au 30/09/2026.</span>
+    </div>
+    <div id="etat" class="petit" style="margin-top:10px"></div>
+    <div id="ficlist" class="fichiers" style="margin-top:10px"></div>
+  </div>
+
+  <div class="carte">
+    <h2 style="display:flex;justify-content:space-between;align-items:center">
+      Réglages — journaux et format <button class="onglet" id="btnRegl" style="padding:6px 12px">afficher / masquer</button></h2>
+    <div id="reglages" class="masque">
+      <p class="petit">Tout se règle ici : cochez les journaux que vous voulez, changez leurs codes et
+        leurs noms, et modifiez le format d'import de A à Z. Enregistrer écrit dans
+        <code>regles/REGLES.xlsx</code> — vous retrouverez la même chose dans Excel.</p>
+      <div id="tableJournaux"></div>
+      <div id="tableFormat"></div>
+      <div id="tableParams"></div>
+      <button class="bouton or" id="btnSauver" style="margin-top:10px">Enregistrer les réglages</button>
+      <span class="petit" id="etatReglages" style="margin-left:10px"></span>
+    </div>
+  </div>
+
+  <div id="resume" class="carte masque">
+    <h2>1 · Ce que l'outil a reconnu</h2>
+    <div class="grille" id="kpis"></div>
+    <div id="alertes" style="margin-top:14px"></div>
+  </div>
+
+  <div id="blocjournaux" class="carte masque">
+    <h2>2 · Les journaux qui seront produits</h2>
+    <div class="scroll"><table id="tstats"></table></div>
+    <p class="petit" style="margin-top:8px">Tous les journaux sont équilibrés (débit = crédit). Les lignes
+      marquées <span class="etiquette or">à confirmer</span> sont écrites dans le compte d'attente : corrigez-les
+      ci-dessous avant de générer, ou plus tard dans le classeur <code>regles/REGLES.xlsx</code>.</p>
+  </div>
+
+  <div id="blocdetail" class="carte masque">
+    <h2>3 · Vérifier et corriger ligne par ligne</h2>
+    <div class="onglets" id="onglets"></div>
+    <div id="tables"></div>
+    <p class="petit" id="noteAffiche"></p>
+  </div>
+
+  <div id="blocgener" class="carte masque">
+    <button class="bouton or" id="btnGener">Générer les journaux pour Sage</button>
+    <span class="petit" id="etatGener" style="margin-left:12px"></span>
+  </div>
+
+  <div id="blocresultat" class="carte masque">
+    <h2>4 · Vos fichiers</h2>
+    <div id="listeFichiers"></div>
+    <p class="petit" id="dossierOut"></p>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+let ANALYSE = null, CORRECTIONS = {}, ONGLET = "";
+
+function argent(x){ return (Math.round(x||0)).toLocaleString('fr-FR').replace(/\u202f|\u00a0/g,' '); }
+function dateFr(d){ return d ? d.slice(8,10)+'/'+d.slice(5,7)+'/'+d.slice(0,4) : ''; }
+
+/* ---------------------------------------------------------------- dépôt des fichiers */
+const zone = $('#zone'), choix = $('#choix');
+zone.onclick = () => choix.click();
+zone.ondragover = e => { e.preventDefault(); zone.classList.add('sur'); };
+zone.ondragleave = () => zone.classList.remove('sur');
+zone.ondrop = e => { e.preventDefault(); zone.classList.remove('sur'); envoyer(e.dataTransfer.files); };
+choix.onchange = () => envoyer(choix.files);
+
+let FORCES = {};
+function envoyer(files){
+  if(!files || !files.length) return;
+  const fd = new FormData();
+  for(const f of files) fd.append('fichiers', f);
+  fd.append('date_min', $('#dmin').value);
+  fd.append('date_max', $('#dmax').value);
+  $('#etat').textContent = 'Lecture de ' + files.length + ' fichier(s)…';
+  $('#etat').style.color = '#b3261e';
+  fetch('/api/analyser', {method:'POST', body:fd})
+    .then(r => r.json())
+    .then(rep => {
+      if(!rep.ok){ $('#etat').textContent = 'Erreur : ' + rep.message; return; }
+      $('#etat').textContent = 'Fichiers lus.'; $('#etat').style.color = '#1e7b45';
+      ANALYSE = rep.analyse; CORRECTIONS = {};
+      afficher();
+    })
+    .catch(e => $('#etat').textContent = 'Erreur réseau : ' + e);
+}
+
+function relire(){
+  $('#etat').textContent = 'Nouvelle lecture avec la période choisie…';
+  fetch('/api/reanalyser', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({date_min: $('#dmin').value, date_max: $('#dmax').value, types: FORCES})})
+    .then(r => r.json())
+    .then(rep => {
+      if(!rep.ok){ $('#etat').textContent = 'Erreur : ' + rep.message; return; }
+      $('#etat').textContent = 'Fichiers relus.'; $('#etat').style.color = '#1e7b45';
+      ANALYSE = rep.analyse; afficher();
+    });
+}
+$('#btnRelire').onclick = relire;
+
+function chargerProfils(){
+  fetch('/api/profils').then(r => r.json()).then(rep => {
+    $('#profil').innerHTML = rep.profils.map(p =>
+      `<option value="${p}" ${p===rep.actif?'selected':''}>${p.replace('REGLES','Règles').replace('.xlsx','')}</option>`).join('');
+    $('#profil').onchange = () => fetch('/api/profil', {method:'POST',
+        headers:{'Content-Type':'application/json'}, body: JSON.stringify({fichier: $('#profil').value})})
+      .then(() => { chargerReglages(); if (ANALYSE) relire(); });
+  });
+}
+chargerProfils();
+
+/* ------------------------------------------------------- réglages des journaux et du format */
+let REG = null;
+$('#btnRegl').onclick = () => $('#reglages').classList.toggle('masque');
+
+function chargerReglages(){
+  fetch('/api/reglages').then(r => r.json()).then(rep => { REG = rep; dessineReglages(); });
+}
+function dessineReglages(){
+  if(!REG) return;
+  let h = `<h3 class="petit" style="color:#1f3864;margin:14px 0 6px">LES JOURNAUX — cochez ceux que vous voulez, changez code, nom et nom de fichier</h3>
+    <div class="scroll"><table><tr><th>Journal</th><th>Actif</th><th>Code</th><th>Nom du journal</th>
+      <th>Préfixe pièces</th><th>Nom du fichier exporté</th></tr>`;
+  REG.journaux.forEach(j => {
+    h += `<tr><td><b>${j.cle}</b></td>
+      <td><input type="checkbox" data-j="${j.cle}" data-champ="actif" ${j.actif==='oui'?'checked':''}></td>
+      <td><input class="compte" style="width:58px" data-j="${j.cle}" data-champ="code" value="${j.code}"></td>
+      <td><input class="compte" style="width:180px" data-j="${j.cle}" data-champ="nom" value="${j.nom}"></td>
+      <td><input class="compte" style="width:52px" data-j="${j.cle}" data-champ="prefixe" value="${j.prefixe}"></td>
+      <td><input class="compte" style="width:300px" data-j="${j.cle}" data-champ="fichier" value="${j.fichier}"></td></tr>`;
+  });
+  h += `</table></div>
+    <h3 class="petit" style="color:#1f3864;margin:16px 0 6px">LE FORMAT D'IMPORT — modifiable de A à Z</h3>
+    <div class="grille">`;
+  REG.format_.forEach(f => {
+    const id = 'f_' + f.cle;
+    const ctrl = f.options.length
+      ? `<select id="${id}">${f.options.map(o => `<option ${o===f.valeur?'selected':''}>${o}</option>`).join('')}</select>`
+      : `<input id="${id}" class="compte" style="width:100%" value="${f.valeur}">`;
+    h += `<label class="petit" style="display:block"><b>${f.cle}</b><br>${ctrl}
+      <br><span style="color:#7a8499">${f.aide||''}</span></label>`;
+  });
+  h += `</div>
+    <h3 class="petit" style="color:#1f3864;margin:16px 0 6px">PARAMÈTRES DU DOSSIER</h3>
+    <div class="grille">`;
+  REG.parametres.forEach(p => {
+    const id = 'p_' + p.cle;
+    const ctrl = /^date_/.test(p.cle)
+      ? `<input type="date" id="${id}" class="compte" style="width:100%" value="${p.valeur}">`
+      : `<input id="${id}" class="compte" style="width:100%" value="${p.valeur}">`;
+    h += `<label class="petit" style="display:block"><b>${p.cle}</b><br>${ctrl}
+      <br><span style="color:#7a8499">${p.aide||''}</span></label>`;
+  });
+  h += '</div>';
+  $('#tableJournaux').innerHTML = h;   // un seul bloc injecté, plus simple
+  $('#tableFormat').innerHTML = ''; $('#tableParams').innerHTML = '';
+}
+function sauverReglages(){
+  if(!REG) return;
+  const journaux = {};
+  REG.journaux.forEach(j => journaux[j.cle] = {});
+  document.querySelectorAll('input[data-j]').forEach(el => {
+    journaux[el.dataset.j][el.dataset.champ] = el.type === 'checkbox' ? (el.checked ? 'oui' : 'non') : el.value;
+  });
+  const format_ = {}, parametres = {};
+  REG.format_.forEach(f => { const el = document.getElementById('f_' + f.cle); if (el) format_[f.cle] = el.value; });
+  REG.parametres.forEach(p => { const el = document.getElementById('p_' + p.cle); if (el) parametres[p.cle] = el.value; });
+  $('#etatReglages').textContent = 'Enregistrement…';
+  fetch('/api/reglages', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({journaux, format: format_, parametres})})
+    .then(r => r.json())
+    .then(rep => { $('#etatReglages').textContent = rep.ok ? 'Enregistré dans REGLES.xlsx.'
+        : 'Erreur : ' + rep.message; if (rep.ok) { chargerReglages(); if (ANALYSE) relire(); } });
+}
+$('#btnSauver').onclick = sauverReglages;
+chargerReglages();
+
+function changerType(nom, valeur){ FORCES[nom] = valeur; relire(); }
+const TYPES = [['', 'détecté'], ['caisse','caisse (Excel/CSV)'], ['ventes','factures FNE'],
+               ['paie','bulletins de paie'], ['modele_its','modèle ITS (DGI)'],
+               ['banque','relevé bancaire'], ['inconnu','ignorer']];
+
+/* ----------------------------------------------------------------------- affichage */
+function afficher(){
+  const a = ANALYSE;
+  $('#ficlist').innerHTML = a.fichiers.map(f =>
+     `<div class="fic"><span class="etiquette ${f.type==='inconnu'?'rouge':''}">${f.type}</span> ${f.nom}
+      <span class="petit">${(f.taille/1024).toFixed(0)} Ko</span>
+      <select onchange="changerType('${f.nom.replace(/'/g, "\\'")}', this.value)">
+        ${TYPES.map(([v,l]) => `<option value="${v}" ${(FORCES[f.nom]||'')===v?'selected':''}>${l}</option>`).join('')}
+      </select></div>`).join('');
+  // KPI
+  const t = a.totaux || {};
+  const kpis = [];
+  kpis.push(['Lignes de caisse lues', a.caisse_total]);
+  kpis.push(['Factures FNE', t.factures || 0]);
+  kpis.push(['Bulletins de paie', t.bulletins || 0]);
+  kpis.push(['Mouvements de banque', a.banque.length]);
+  const tot = (a.stats||[]).reduce((s,x)=>s+x.debit,0), ecart = (a.stats||[]).reduce((s,x)=>s+x.ecart,0);
+  kpis.push(['Total débit des journaux', argent(tot) + ' F']);
+  kpis.push(['Écart débit/crédit', argent(ecart) + ' F']);
+  $('#kpis').innerHTML = kpis.map(([k,v],i)=>`<div class="kpi ${i===5?(Math.abs(ecart)<.01?'ok':'ko'):''}">
+      <span>${k}</span><b>${v}</b></div>`).join('');
+  $('#alertes').innerHTML = (a.alertes&&a.alertes.length)
+     ? a.alertes.map(x=>`<div class="alerte">${x}</div>`).join('')
+     : '<div class="alerte" style="border-color:#1e7b45;background:#f0fbf4">Rien à signaler.</div>';
+  // tableau des journaux
+  const th = `<tr><th>Journal</th><th>Pièces</th><th>Lignes</th><th>Débit</th><th>Crédit</th><th>Écart</th><th>État</th></tr>`;
+  $('#tstats').innerHTML = th + (a.stats||[]).map(s=>`<tr>
+      <td><b>${s.journal}</b> ${s.nom||''}</td><td class="num">${s.pieces}</td><td class="num">${s.lignes}</td>
+      <td class="num">${argent(s.debit)}</td><td class="num">${argent(s.credit)}</td>
+      <td class="num">${s.ecart.toFixed(2)}</td>
+      <td>${Math.abs(s.ecart)<.01?'<span class="etiquette vert">équilibré</span>':'<span class="etiquette rouge">à corriger</span>'}${s.ko?' <span class="etiquette rouge">'+s.ko+' pièce(s) KO</span>':''}</td></tr>`).join('');
+  // onglets
+  const onglets = [['caisse','Caisse ('+a.caisse_total+')'], ['ventes','Ventes ('+a.ventes.length+')'],
+                   ['paie','Paie ('+a.paie.length+')'], ['banque','Banque ('+a.banque.length+')'],
+                   ['aconf','À confirmer ('+a.a_confirmer.length+')'],
+                   ['hors','Hors périmètre ('+a.hors_total+')']];
+  $('#onglets').innerHTML = onglets.map(([c,l])=>`<button class="onglet" data-c="${c}">${l}</button>`).join('');
+  document.querySelectorAll('.onglet').forEach(b => b.onclick = () => { ONGLET = b.dataset.c; dessine(); });
+  ONGLET = 'caisse';
+  dessine();
+  ['#resume','#blocjournaux','#blocdetail','#blocgener'].forEach(s=>$(s).classList.remove('masque'));
+}
+
+function champ(cle, valeur, type){
+  const cl = type === 'texte' ? 'compte' : 'champ';
+  return `<input class="${cl}" data-cle="${cle}" value="${valeur}" oninput="maj(this)">`;
+}
+function maj(el){ CORRECTIONS[el.dataset.cle] = el.value; }
+
+function dessine(){
+  document.querySelectorAll('.onglet').forEach(b=>b.classList.toggle('actif', b.dataset.c===ONGLET));
+  const a = ANALYSE, out = [];
+  $('#noteAffiche').textContent = '';
+  if(ONGLET==='caisse'){
+    if(a.caisse_total > a.caisse.length){
+      out.push(`<p class="petit">${a.caisse.length} premières lignes affichées sur ${a.caisse_total}
+        (le reste est identique et déjà pris en compte). Les lignes à confirmer sont plus bas.</p>`);
+    }
+    out.push(`<div class="scroll"><table><tr><th>Date</th><th>Libellé</th><th>Catégorie</th><th>Bénéficiaire</th>
+      <th>Entrée</th><th>Dépense</th><th>Compte proposé</th><th>Pourquoi</th></tr>` +
+      a.caisse.map(l=>`<tr>
+        <td>${dateFr(l.date)}${l.date_reprise?' <span class="etiquette or">date reprise</span>':''}</td>
+        <td>${l.libelle} ${l.sans_libelle?'<span class="etiquette rouge">sans libellé</span>':''}</td>
+        <td class="petit">${l.categorie||''}</td><td class="petit">${l.benef||''}</td>
+        <td class="credit">${l.entree?argent(l.entree):''}</td><td class="debit">${l.depense?argent(l.depense):''}</td>
+        <td>${champ(l.cle, l.compte||'47180000', 'texte')}${l.immo?' <span class="etiquette">immo</span>':''}${l.impot?' <span class="etiquette">impôt</span>':''}</td>
+        <td class="petit">${l.motif||''}</td></tr>`).join('') + '</table></div>');
+    if(a.ventes.length){
+      out.push(`<p class="petit">Encaissements reconnus des factures : <b>${a.ventes.filter(v=>v.paye).length}</b> sur ${a.ventes.length}.</p>`);
+    }
+  }
+  if(ONGLET==='ventes'){
+    out.push(`<div class="scroll"><table><tr><th>Date</th><th>N° facture</th><th>Client</th><th>NCC</th>
+      <th>Payé par</th><th>HT</th><th>TVA</th><th>Timbre/autres</th><th>Total</th><th>Compte vente</th><th>Compte tiers</th></tr>` +
+      a.ventes.map(v=>`<tr>
+        <td>${dateFr(v.date)}</td><td>${v.numero}</td><td>${v.client}</td><td>${v.ncc}</td>
+        <td class="petit">${v.mode}${v.paye?' <span class="etiquette vert">encaisse</span>':''}</td>
+        <td class="num">${argent(v.ht)}</td><td class="num">${argent(v.tva)}</td><td class="num">${argent(v.timbre)}</td>
+        <td class="num"><b>${argent(v.total)}</b></td>
+        <td>${champ(v.cle+':compte', v.compte||'70200000','texte')}</td>
+        <td>${champ(v.cle+':tiers', v.tiers||'411101','texte')}</td></tr>`).join('') + '</table></div>');
+  }
+  if(ONGLET==='paie'){
+    out.push(`<div class="scroll"><table><tr><th>Période</th><th>Salarié</th><th>Matricule</th><th>Brut</th>
+      <th>Transport</th><th>ITS net</th><th>CNPS sal.</th><th>CMU</th><th>CNPS patr.</th><th>ITS employeur</th>
+      <th>FDFP</th><th>Net à payer</th></tr>` +
+      a.paie.map(b=>`<tr>
+        <td>${b.periode}</td><td>${b.nom}</td><td class="petit">${b.matricule}</td>
+        <td>${champ(b.cle+':brut', b.brut)}</td><td>${champ(b.cle+':transport', b.transport)}</td>
+        <td>${champ(b.cle+':its_net', b.its_net)}</td><td>${champ(b.cle+':cnps_sal', b.cnps_sal)}</td>
+        <td>${champ(b.cle+':cmu_sal', b.cmu_sal)}</td><td>${champ(b.cle+':cnps_pat', b.cnps_pat)}</td>
+        <td>${champ(b.cle+':its_pat', b.its_pat)}</td><td>${champ(b.cle+':fdfp', b.fdfp)}</td>
+        <td>${champ(b.cle+':net', b.net)} ${b.calcules&&b.calcules.length?'<span class="etiquette or">calculé</span>':''}</td></tr>`).join('') + '</table></div>');
+  }
+  if(ONGLET==='banque'){
+    out.push(a.banque.length ? `<div class="scroll"><table><tr><th>Date</th><th>Libellé</th><th>Débit</th>
+      <th>Crédit</th><th>Solde</th><th>Déduit de</th><th>Compte proposé</th></tr>` +
+      a.banque.map(m=>`<tr><td>${dateFr(m.date)}</td><td>${m.libelle}</td>
+        <td class="debit">${m.debit?argent(m.debit):''}</td><td class="credit">${m.credit?argent(m.credit):''}</td>
+        <td class="num petit">${m.solde?argent(m.solde):''}</td><td class="petit">${m.confiance}</td>
+        <td>${champ(m.cle, '', 'texte')}</td></tr>`).join('') + '</table></div>'
+      : '<p class="petit">Aucun relevé bancaire déposé.</p>');
+  }
+  if(ONGLET==='aconf'){
+    out.push(a.a_confirmer.length ? `<div class="scroll"><table><tr><th>Quoi</th><th>Libellé</th><th>Montant</th>
+      <th>Proposition</th><th>Votre compte</th></tr>` + a.a_confirmer.map(c=>`<tr>
+      <td class="petit">${c.quoi}</td><td>${c.libelle||''}</td><td class="num">${argent(c.montant)}</td>
+      <td class="petit">${c.proposition||'—'}</td><td>${champ(c.cle, c.proposition||'','texte')}</td></tr>`).join('')
+      + '</table></div>' : '<p class="petit">Aucune ligne à confirmer : tout a été affecté automatiquement.</p>');
+    out.push(`<p class="petit">Ces lignes sont écrites dans le compte d'attente <code>47180000</code>
+      pour que vos journaux restent équilibrés. Donnez-moi le bon compte et je le mets dans les règles
+      pour la prochaine fois.</p>`);
+  }
+  if(ONGLET==='hors'){
+    out.push(`<p class="petit">${a.hors_total} lignes, ${argent(a.hors_montant)} F — non journalisées
+      (versements, dépôts, retraits, salaires déjà traités en paie, prêts, amendes, missions…).</p>`);
+    out.push('<div class="scroll"><table><tr><th>Date</th><th>Libellé</th><th>Motif</th><th>Sens</th><th>Montant</th></tr>'
+      + a.hors.map(h=>`<tr><td>${dateFr(h.date)}</td><td>${h.libelle}</td><td class="petit">${h.motif}</td>
+        <td>${h.sens}</td><td class="num">${argent(h.montant)}</td></tr>`).join('') + '</table></div>');
+  }
+  $('#tables').innerHTML = out.join('');
+}
+
+/* ------------------------------------------------------------------------ génération */
+$('#btnGener').onclick = () => {
+  $('#etatGener').textContent = 'Écriture des journaux…';
+  fetch('/api/generer', {method:'POST', headers:{'Content-Type':'application/json'},
+       body: JSON.stringify({corrections: CORRECTIONS})})
+    .then(r => r.json())
+    .then(rep => {
+      if(!rep.ok){ $('#etatGener').textContent = 'Erreur : ' + rep.message; return; }
+      $('#etatGener').textContent = 'Journaux écrits.';
+      $('#blocresultat').classList.remove('masque');
+      $('#listeFichiers').innerHTML = '<div class="scroll"><table><tr><th>Fichier à importer</th><th>Journal</th>' +
+        '<th>Pièces</th><th>Lignes</th><th>Montant</th><th>Télécharger</th></tr>' +
+        rep.fichiers.map(f=>`<tr><td><b>${f.nom}</b></td><td>${f.journal}</td><td class="num">${f.pieces}</td>
+          <td class="num">${f.lignes}</td><td class="num">${argent(f.montant)} F</td>
+          <td><a class="lien" href="${f.url}">télécharger</a> · <a class="lien" href="/voir?p=${encodeURIComponent(f.nom)}" target="_blank">voir</a></td></tr>`).join('') +
+        '</table></div>';
+      $('#dossierOut').textContent = 'Dossier complet (LISEZ-MOI, classeur de lecture, contrôles) : ' + rep.dossier;
+      ANALYSE = rep.analyse; afficher();
+    })
+    .catch(e => $('#etatGener').textContent = 'Erreur réseau : ' + e);
+};
+</script>
+</body>
+</html>

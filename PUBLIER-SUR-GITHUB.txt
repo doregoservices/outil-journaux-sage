@@ -1,0 +1,61 @@
+PUBLIER CE DOSSIER SUR VOTRE GITHUB — 3 FAÇONS
+================================================================================
+
+C'est ce dossier entier qui devient le dépôt (outil + moteur + profils de règles).
+Ne publiez JAMAIS vos fichiers clients (caisse, factures, bulletins) dans un dépôt :
+le fichier .gitignore livré les écarte déjà (*.pdf, exemples/…), et les profils
+regles/*.xlsx ne contiennent que des plans de comptes, pas de données.
+
+--------------------------------------------------------------------------------
+FAÇON A — GitHub Desktop (aucune ligne de commande, la plus simple)
+--------------------------------------------------------------------------------
+1. Installez GitHub Desktop : https://desktop.github.com
+2. Connectez-vous avec votre compte GitHub (doregoservices).
+3. Menu File > Add local repository… et choisissez CE dossier.
+   (Si GitHub Desktop propose de créer un dépôt, acceptez.)
+4. En haut : « Publish repository » — décochez « Keep this code private » si vous
+   voulez vérifier depuis un simple lien, puis cliquez Publish.
+5. Le lien du dépôt s'affiche : ouvrez-le dans le navigateur, vous verrez les
+   fichiers et le README.
+
+--------------------------------------------------------------------------------
+FAÇON B — le script de ce dossier
+--------------------------------------------------------------------------------
+Windows : double-cliquez sur  PUBLIER-SUR-GITHUB.bat
+Linux/Mac : ./PUBLIER-SUR-GITHUB.sh
+
+Il vous demandera :
+   - l'adresse du dépôt (créez-le d'abord, vide, sur github.com : « New repository »,
+     nom conseillé : outil-journaux-sage, ne cochez ni README ni .gitignore) ;
+   - votre email et votre nom GitHub ;
+puis il initialise, enregistre et pousse le dossier.
+
+Si Git vous demande un mot de passe, ce n'est PAS votre mot de passe GitHub :
+c'est un jeton. Créez-en un sur https://github.com/settings/tokens
+(fine-grained, « Contents : Read and write » sur ce dépôt uniquement, expiration 7 jours),
+puis collez-le comme mot de passe. Supprimez le jeton après la publication.
+
+--------------------------------------------------------------------------------
+FAÇON C — je pousse moi-même (je n'ai aucun accès à votre compte)
+--------------------------------------------------------------------------------
+Je ne peux pas publier à votre place : je n'ai ni votre mot de passe, ni de jeton,
+et votre dépôt dgi-modeles reste privé. Si vous préférez que je le fasse :
+  1. créez le dépôt vide sur github.com (nom : outil-journaux-sage) ;
+  2. créez un jeton fine-grained limité à CE dépôt, « Contents : Read and write »,
+     expiration 1 à 7 jours ;
+  3. donnez-moi l'adresse du dépôt et le jeton dans la conversation ;
+  4. je pousse, puis VOUS révoquez le jeton immédiatement
+     (https://github.com/settings/tokens > Delete).
+C'est la seule exception où un jeton doit circuler : ne réutilisez jamais un jeton
+personnel existant, et ne partagez jamais un jeton qui donne accès à tout le compte.
+
+--------------------------------------------------------------------------------
+APRÈS LA PUBLICATION
+--------------------------------------------------------------------------------
+- Le lien ressemblera à : https://github.com/doregoservices/outil-journaux-sage
+- Chacun peut le lire ; pour le modifier, il faut être connecté à votre compte.
+- Pour partager avec votre comptable : envoyez le lien du README (il explique tout)
+  ou le ZIP de l'outil (releases du dépôt).
+- Modèle de première « release » : sur la page du dépôt, Releases > Draft a new
+  release, tag v1.0, joignez Outil_Journaux_Sage_v1.zip — c'est ce que vos
+  utilisateurs téléchargeront.

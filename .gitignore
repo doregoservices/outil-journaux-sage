@@ -1,0 +1,15 @@
+# À écarter du dépôt
+travail/
+sortie/
+.venv/
+__pycache__/
+*.pyc
+*.zip
+.DS_Store
+Thumbs.db
+# vos fichiers de travail : ne les publiez jamais sur GitHub
+exemples/
+*.pdf
+*.xlsm
+*.xlsx
+!regles/*.xlsx

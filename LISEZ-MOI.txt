@@ -1,0 +1,118 @@
+OUTIL JOURNAUX SAGE — caisse · factures FNE · paie · relevés bancaires
+================================================================================
+
+Ce que fait l'outil
+--------------------------------------------------------------------------------
+Vous déposez vos fichiers, il en sort les journaux SYSCOHADA prêts à importer
+dans Sage 100 (format de votre dossier : tabulation, retour-chariot, 2 décimales
+à la virgule, dates jj/mm/aaaa).
+
+    Un fichier de caisse (Excel .xlsx / .xlsm, CSV ou texte)
+        -> journal de CAISSE (achats réglés, encaissements, avances) et
+        -> journal ACHATS (060) quand vous travaillez en journaux miroirs
+    Des factures FNE en PDF, ou le registre « Mes factures » exporté en Excel
+        -> journal VENTES (070) + encaissements clients en caisse ou en banque
+    Des bulletins de paie en PDF, ou le classeur de déclaration ITS de la DGI
+        -> journal PAIE (042) complet (brut, transport, CNPS, ITS, FDFP) et le
+           règlement des nets par la caisse ou la banque
+    Un relevé bancaire (PDF de n'importe quelle banque, Excel ou CSV)
+        -> journal BANQUE (052)
+
+Aucun modèle n'est imposé : l'outil cherche tout seul la ligne d'en-têtes et
+reconnaît les colonnes (DATE / LIBELLÉ / ENTRÉE / DÉPENSE, ou MONTANT + SENS).
+Si un fichier sort de l'ordinaire, vous pouvez forcer son type dans la liste.
+
+--------------------------------------------------------------------------------
+1) DÉMARRER L'OUTIL
+--------------------------------------------------------------------------------
+Windows   : double-cliquez sur « Lancer-l-outil.bat » (voir INSTALLER-WINDOWS.txt
+            la première fois : Python et 4 composants sont installés).
+Autrement : python app.py   puis ouvrez http://127.0.0.1:5000
+
+L'écran se déroule en 4 étapes : déposer les fichiers -> vérifier ce que l'outil
+a reconnu -> corriger les lignes douteuses -> générer et télécharger.
+
+--------------------------------------------------------------------------------
+2) LES FICHIERS PRODUITS
+--------------------------------------------------------------------------------
+   1-A-IMPORTER-Ventes-070.txt      journal 070 VENTES
+   2-A-IMPORTER-Achats-060.txt      journal 060 ACHATS
+   3-A-IMPORTER-Caisse-057.txt      journal 057 CAISSE
+   4-A-IMPORTER-Banque-052.txt      journal 052 BANQUE   (si relevé fourni)
+   5-A-IMPORTER-Paie-042.txt        journal 042 PAIE     (si bulletins fournis)
+   6-A-IMPORTER-OD-090.txt          journal 090 OPÉRATIONS DIVERSES
+   ESSAIS/                          petits fichiers de test (2 à 3 pièces)
+   AUTRES/1-Journaux_a_lire.xlsx    tous les journaux, un onglet par journal
+   AUTRES/RAPPORT_CONTROLES.txt     contrôles, lignes à confirmer, hors périmètre
+   AUTRES/version_CRLF/             même fichiers avec saut de ligne Windows
+   COMPTES_TIERS_A_CREER.txt        les tiers à créer dans Sage
+   LISEZ-MOI.txt                    récapitulatif du lot produit
+
+Dans Sage : Échanges > Importer des écritures, avec votre format (FKS_INSD ou
+autre). Si les tiers bloquent l'import, supprimez les règles 401* et 411* du
+format. Ne réimportez jamais deux fois le même fichier (doublons).
+
+--------------------------------------------------------------------------------
+3) TOUT EST PARAMÉTRABLE — SANS TOUCHER AU CODE
+--------------------------------------------------------------------------------
+À l'écran, le panneau « Réglages — journaux et format » ; dans le classeur
+regles/REGLES.xlsx (profil au choix en haut de l'écran), les mêmes réglages :
+
+   JOURNAUX     LA LISTE DES JOURNAUX : vous cochez ceux que vous voulez produire,
+                vous changez leur CODE (070, VTE…), leur NOM, le PRÉFIXE des
+                numéros de pièces, et le NOM DU FICHIER exporté
+                ({n} numéro d'ordre, {nom} nom du journal, {code} code, {dossier}).
+                L'ordre des lignes = l'ordre des fichiers 1, 2, 3…
+                Un journal décoché n'est jamais écrit : l'outil le signale dans le
+                rapport et bascule les écritures au bon endroit (par exemple, sans
+                journal achats, les achats sont passés directement au règlement).
+   FORMAT       LE FORMAT D'IMPORT DE A À Z : séparateur (tabulation, point-virgule,
+                virgule, espace, barre), fin de ligne (CR, CR+LF, LF), encodage
+                (cp1252, utf-8, latin-1), format de date (jj/mm/aaaa, aaaa-mm-jj,
+                jjmmaaaa…), nombre de décimales, séparateur décimal (virgule ou
+                point), ORDRE ET CHOIX DES COLONNES, ligne d'en-tête oui/non,
+                longueur des libellés, préfixe des noms de fichier, et les options
+                (fichiers d'essai, version CRLF, classeur de lecture, rapport).
+   PARAMETRES   comptes de caisse / banque / clients / fournisseurs, compte
+                d'attente, seuil d'immobilisation (250 000 F), mode des achats
+                (miroir ou direct), règlement des salaires (caisse, banque, aucun),
+                sort des versements/dépôts/retraits, sort des recettes sans facture,
+                période à traiter, barème de paie 2024 (CNPS 6,3 %, plafond 70 000,
+                ITS 16 % moins 12 000, RICF 5 500 F par part, ITS employeur 1,2 %,
+                FDFP 1,6 %).
+   REGLES       vos mots-clés -> compte (une ligne par règle, la première qui
+                colle gagne). Comptes spéciaux acceptés : [HORS] (hors
+                périmètre), [PAIE], [TRESORERIE], [IMPOSITION], [AVANCE],
+                [PROPRIETAIRE].
+   CATEGORIES   ce que veut dire votre colonne COMPTE / AFFECTATION
+   TAXES        ventilation des impôts et taxes
+   IMMOS        quels achats passent en classe 2 au-delà du seuil
+   BANQUE       comment classer les opérations du relevé bancaire
+   TIERS        les comptes tiers utilisés (401101, 401199, 411101…)
+
+Trois profils sont livrés : REGLES.xlsx (générique), REGLES_FKS.xlsx,
+REGLES_JCHARNO.xlsx. Le script preparer_presets.py les régénère à l'identique
+(attention : il écrase vos modifications ; gardez une copie de votre fichier).
+
+--------------------------------------------------------------------------------
+4) CE QUE L'OUTIL NE FAIT PAS (il le dit au lieu de l'inventer)
+--------------------------------------------------------------------------------
+- Il n'invente jamais un compte : une ligne qu'il ne sait pas classer va dans le
+  compte d'attente 47180000 et ressort dans le rapport avec son libellé.
+- Les lignes hors périmètre (versements, dépôts, retraits, amendes, missions,
+  aides, salaires déjà traités en paie) sont écartées et listées à part.
+- Un PDF scanné (photo) n'est pas lisible : il faut un vrai PDF ou l'export
+  Excel de la FNE.
+- TVA : mise de côté par défaut (dossiers non assujettis). Mettez
+  « ventilation_tva = oui » dans PARAMETRES si votre dossier est assujetti.
+
+--------------------------------------------------------------------------------
+5) VÉRIFICATIONS QUE L'OUTIL FAIT POUR VOUS
+--------------------------------------------------------------------------------
+- chaque pièce est équilibrée (débit = crédit) et chaque journal totalisé ;
+- la somme des articles d'une facture est comparée au total HT ;
+- le net de chaque bulletin est recalculé et comparé à ce qui est écrit ;
+- les dates reprises ou estimées (feuille sans date) sont signalées ;
+- les encaissements sont rapprochés des factures (montant + date à 60 jours).
+
+Bonne comptabilité. — Outil JOURNAUX SAGE v1.0
