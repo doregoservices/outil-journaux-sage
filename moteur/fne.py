@@ -68,20 +68,27 @@ def _articles(t):
     return out
 
 
-def _facture(bloc, nom_fichier):
+def _facture(bloc, nom_fichier, contexte=None):
     n = MARQUE.search(bloc)
     if not n:
         return None
     numero = n.group(1)
     ls = _lignes(bloc)
+    ctx = contexte if contexte is not None else bloc
     mode = ""
-    m = re.search(r"Mode de paiement\s*:\s*([^\n]+)", bloc, re.I)
+    m = re.search(r"Mode de paiement\s*:\s*([^\n]+)", bloc, re.I) \
+        or re.search(r"Mode de paiement\s*:\s*([^\n]+)", ctx, re.I)
     if m:
         mode = m.group(1).strip()
     d = None
-    m = re.search(r"Date et heure\s*:\s*(\d{2}/\d{2}/\d{4})", bloc, re.I)
+    m = re.search(r"Date et heure\s*:\s*(\d{2}/\d{2}/\d{4})", bloc, re.I) \
+        or re.search(r"Date et heure\s*:\s*(\d{2}/\d{2}/\d{4})", ctx, re.I)
     if m:
         d = date_fr(m.group(1))
+    if not d:                                   # à défaut, la date du nom du fichier (…_2026-05-20.pdf)
+        m = re.search(r"(\d{4})-(\d{2})-(\d{2})", os.path.basename(nom_fichier))
+        if m:
+            d = date_fr("%s/%s/%s" % (m.group(3), m.group(2), m.group(1)))
     client_nom, client_ncc = "", ""
     m = re.search(r"Client\s*\n\s*Nom\s*:\s*\n?(.*?)\n", bloc, re.S)
     if m:
@@ -121,13 +128,14 @@ def lire(chemin):
         marques = list(MARQUE.finditer(t))
         if not marques:
             if blocs:
-                blocs[-1] += "\n" + t          # page de continuation (articles qui dépassent)
+                blocs[-1]["bloc"] += "\n" + t  # page de continuation (articles qui dépassent)
             continue
+        avant = t[:marques[0].start()]
         for k, m in enumerate(marques):
             fin = marques[k + 1].start() if k + 1 < len(marques) else len(t)
-            blocs.append(t[m.start():fin])
+            blocs.append({"bloc": t[m.start():fin], "contexte": avant + "\n" + t[m.start():fin]})
     for b in blocs:
-        fa = _facture(b, chemin)
+        fa = _facture(b["bloc"], chemin, b["contexte"])
         if not fa:
             continue
         if not fa["articles"] and fa["ht"]:

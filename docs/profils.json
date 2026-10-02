@@ -1,0 +1,2552 @@
+{
+ "version": "2026.10.2",
+ "profils": {
+  "REGLES": {
+   "dossier": "FKS INDUSTRIE",
+   "parametres": {
+    "version_regles": "2026.10.2",
+    "dossier": "FKS INDUSTRIE",
+    "compte_fournisseur": "40110000",
+    "tiers_fournisseur": "401199",
+    "compte_client": "41110000",
+    "tiers_client": "411101",
+    "compte_caisse": "57110000",
+    "compte_banque": "521100",
+    "compte_ventes": "70200000",
+    "compte_ventes_2": "70100000",
+    "compte_brut": "66100000",
+    "compte_transport": "66340000",
+    "compte_cnps_patronal": "66410000",
+    "compte_its_employeur": "64130000",
+    "compte_fdfp_charge": "64140000",
+    "compte_personnel": "42200000",
+    "compte_avances": "42110000",
+    "compte_cnps": "43100000",
+    "compte_its": "44720000",
+    "compte_fdfp": "44780000",
+    "compte_timbre": "44730000",
+    "compte_autres_taxes": "64620000",
+    "compte_frais_bancaires": "63100000",
+    "compte_produits_divers": "75800000",
+    "compte_charges_diverses": "65800000",
+    "compte_tva_collectee": "44310000",
+    "compte_tva_deductible": "44510000",
+    "compte_attente": "47180000",
+    "compte_proprietaire": "46210000",
+    "mode_achats": "miroir",
+    "mode_banque": "direct",
+    "ventilation_tva": "non",
+    "seuil_immobilisation": "250000",
+    "reglement_paie": "caisse",
+    "regle_tresorerie": "HORS",
+    "recettes_sans_facture": "HORS",
+    "date_min": "",
+    "date_max": "",
+    "modele_comptes": "8",
+    "taux_cnps_salarie": "6.3",
+    "cmu_salarie": "500",
+    "taux_cnps_retraite": "7.7",
+    "plafond_cnps": "70000",
+    "taux_pf": "5",
+    "taux_maternite": "0.75",
+    "taux_at": "3",
+    "cmu_patronale": "500",
+    "taux_its": "16",
+    "abattement_its": "12000",
+    "ricf_par_part": "5500",
+    "taux_its_employeur": "1.2",
+    "taux_fdfp": "1.6",
+    "code_ventes": "070",
+    "piece_ventes": "VE",
+    "code_achats": "060",
+    "piece_achats": "AC",
+    "code_caisse": "057",
+    "piece_caisse": "CA",
+    "code_banque": "052",
+    "piece_banque": "BQ",
+    "code_paie": "042",
+    "piece_paie": "PA",
+    "code_od": "090",
+    "piece_od": "OD"
+   },
+   "format_": {
+    "separateur": "TABULATION",
+    "fin_ligne": "RETOUR_CHARIOT",
+    "encodage": "cp1252",
+    "format_date": "jj/mm/aaaa",
+    "decimales": "2",
+    "sep_decimal": "VIRGULE",
+    "colonnes": "journal|date|piece|compte|tiers|libelle|debit|credit",
+    "entete": "non",
+    "longueur_libelle": "60",
+    "nom_fichier": "{n}-A-IMPORTER-{nom}-{code}.txt",
+    "creer_essais": "oui",
+    "creer_version_crlf": "oui",
+    "creer_classeur": "oui",
+    "creer_rapport": "oui",
+    "prefixe_fichier": ""
+   },
+   "journaux": [
+    {
+     "cle": "ventes",
+     "actif": "oui",
+     "code": "070",
+     "nom": "VENTES",
+     "prefixe": "VE",
+     "fichier": "{n}-A-IMPORTER-Ventes-{code}.txt"
+    },
+    {
+     "cle": "achats",
+     "actif": "oui",
+     "code": "060",
+     "nom": "ACHATS",
+     "prefixe": "AC",
+     "fichier": "{n}-A-IMPORTER-Achats-{code}.txt"
+    },
+    {
+     "cle": "caisse",
+     "actif": "oui",
+     "code": "057",
+     "nom": "CAISSE",
+     "prefixe": "CA",
+     "fichier": "{n}-A-IMPORTER-Caisse-{code}.txt"
+    },
+    {
+     "cle": "banque",
+     "actif": "oui",
+     "code": "052",
+     "nom": "BANQUE",
+     "prefixe": "BQ",
+     "fichier": "{n}-A-IMPORTER-Banque-{code}.txt"
+    },
+    {
+     "cle": "paie",
+     "actif": "oui",
+     "code": "042",
+     "nom": "PAIE",
+     "prefixe": "PA",
+     "fichier": "{n}-A-IMPORTER-Paie-{code}.txt"
+    },
+    {
+     "cle": "od",
+     "actif": "oui",
+     "code": "090",
+     "nom": "OPERATIONS DIVERSES",
+     "prefixe": "OD",
+     "fichier": "{n}-A-IMPORTER-OD-{code}.txt"
+    }
+   ],
+   "regles": [
+    {
+     "mots": [
+      "PARALLELISME",
+      "CONTRAVENTION",
+      "INFRACTION",
+      "AMENDE"
+     ],
+     "compte": "[HORS]",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "PRET",
+      "DON",
+      "SOUTIEN",
+      "CONDOLEANCES",
+      "SOINS",
+      "INSPECTION",
+      "MISSION",
+      "AIDE"
+     ],
+     "compte": "[HORS]",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "DJEBOTEAU",
+      "ENVOI A M",
+      "ENVOI POUR LE PROPRI",
+      "RETRAIT PROPRI",
+      "ENVOI PROPRI"
+     ],
+     "compte": "[PROPRIETAIRE]",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "AVANCE SUR SALAIRE",
+      "AVANCE SALAIRE",
+      "AVANCE SUR PAIE",
+      "AVANCE SUR LE SALAIRE"
+     ],
+     "compte": "[AVANCE]",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "VERSEMENT",
+      "DEPOT",
+      "DEPOT",
+      "RETRAIT",
+      "REMIS A",
+      "TRANSMIS",
+      "FOND DE CAISSE",
+      "FONDS DE CAISSE",
+      "ALIMENTATION CAISSE",
+      "TRANSFERT ORANGE",
+      "TRANSFERT WAVE",
+      "VIREMENT",
+      "ENVOI FONDS"
+     ],
+     "compte": "[TRESORERIE]",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "REPARAT",
+      "REPRATION",
+      "DEPANNAGE",
+      "DEPANAGE",
+      "VIDANGE",
+      "LAVAGE",
+      "PANNE",
+      "MOTEUR",
+      "COURROIE",
+      "BATTERIE",
+      "FEU",
+      "FEUX",
+      "CLIGNOTANT",
+      "ALTERNATEUR",
+      "ESSUIE",
+      "SOUDURE",
+      "POUBELLE",
+      "REVISION",
+      "ENTRETIEN",
+      "PIECE DE RECHANGE",
+      "VISITE TECHNIQUE",
+      "JANTE",
+      "PARE BRISE",
+      "AMORTISSEUR",
+      "SERRURE",
+      "CERURE",
+      "CYLINDRE",
+      "REMORQUAGE",
+      "POULIE",
+      "VENTILATEUR",
+      "DIAGNOSTIC",
+      "COLLAGE",
+      "TURBO",
+      "FREIN",
+      "EMBRAYAGE",
+      "SUSPENSION",
+      "CARROSSERIE"
+     ],
+     "compte": "62400000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "TRANSPORT",
+      "PEAGE",
+      "PARKING",
+      "STATIONNEMENT",
+      "EXPEDITION",
+      "COLIS",
+      "ENVOIS",
+      "YANGO",
+      "DEPLACEMENT",
+      "CHARGEMENT",
+      "LIVRAISON",
+      "REMISE DE FONDS",
+      "ENVOI",
+      "VOYAGE",
+      "DELEGATION"
+     ],
+     "compte": "61830000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "PATENTE",
+      "COTISATION",
+      "ENREGISTREMENT",
+      "FORMULAIRE DE CONTRAT",
+      "PROCURATION",
+      "PLASTIFICATION",
+      "VIGNETTE",
+      "DGI",
+      "IMPOT",
+      "TAXE",
+      "TIMBRE",
+      "ATC",
+      "GS1"
+     ],
+     "compte": "[IMPOSITION]",
+     "sauf": [
+      "TRANSPORT",
+      "PEAGE",
+      "DEPLACEMENT"
+     ]
+    },
+    {
+     "mots": [
+      "JOURNALIER",
+      "PAIE DES",
+      "MAIN D",
+      "TECHNICIEN",
+      "AFFUTAGE",
+      "MACON",
+      "MECANO",
+      "MECANICIEN"
+     ],
+     "compte": "60570000",
+     "sauf": [
+      "MACONNERIE",
+      "AMENAGEMENT",
+      "MENUISERIE",
+      "COMPTOIR",
+      "ETAGERE",
+      "INSTALLATION",
+      "PEINTURE"
+     ]
+    },
+    {
+     "mots": [
+      "SALAIRE",
+      "PRIME DE VENTE",
+      "GRATIFICATION"
+     ],
+     "compte": "[PAIE]",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "PNEU",
+      "BAGUETTE DE SOUDURE"
+     ],
+     "compte": "60580000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "POLICE"
+     ],
+     "compte": "61830000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "ASSURANCE",
+      "ASSSURANCE"
+     ],
+     "compte": "62500000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "LOYER",
+      "LOCATION"
+     ],
+     "compte": "62200000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "GAZ",
+      "B50",
+      "B38",
+      "B12"
+     ],
+     "compte": "60420000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "CARBURANT",
+      "ESSENCE",
+      "GASOIL",
+      "HUILE DE FREIN",
+      "HUILE MOTEUR"
+     ],
+     "compte": "60530000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "AMENAGEMENT",
+      "INSTALLATION",
+      "MACONNERIE",
+      "MENUISERIE",
+      "CONSTRUCTION",
+      "COMPTOIR",
+      "ETAGERE",
+      "PEINTURE",
+      "TUYAU",
+      "TOLE",
+      "MOULIN",
+      "MACHINE",
+      "MATERIEL",
+      "TABLE",
+      "TASSE",
+      "USTENSILES",
+      "PLAQUE",
+      "THERMOS",
+      "REFRIGERATEUR",
+      "GPS",
+      "CAMERA",
+      "MOTO",
+      "BALANCE",
+      "MEULES",
+      "BARRIQUE",
+      "ROULETTES",
+      "MULTIPRISE",
+      "SCEAUX",
+      "CACHE NEZ",
+      "BACHE",
+      "CLIM",
+      "ROBINET",
+      "SOUS COMPTEUR",
+      "ACCESSOIRES"
+     ],
+     "compte": "60580000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "CAFE",
+      "ACOMPTE",
+      "MATIERE PREMIERE"
+     ],
+     "compte": "60210000",
+     "sauf": [
+      "EMBALLAGE",
+      "SACHET EXPRESSO",
+      "CARNET DE RECU"
+     ]
+    },
+    {
+     "mots": [
+      "EMBALLAGE",
+      "CAPSULE",
+      "SACHET",
+      "CARTON",
+      "MAQUETTE",
+      "BOBINE",
+      "FIL DE COUTURE",
+      "SAC"
+     ],
+     "compte": "60810000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "NOURRITURE",
+      "SUCRE",
+      "PACKS D'EAU",
+      "PACK D'EAU",
+      "EAU EN SACHET",
+      "SPAGETTI",
+      "RIZ",
+      "PAIN",
+      "ATTIEKE",
+      "POISSON",
+      "VIANDE",
+      "ROGNON",
+      "BLONDS",
+      "COLLATION",
+      "LAIT EN POUDRE",
+      "RESTAURATION",
+      "GINGEMBRE",
+      "INFUSETTE",
+      "EPICE",
+      "ARTICLES ET PRODUITS"
+     ],
+     "compte": "63830000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "FACTURE CIE",
+      "ELECTRICITE",
+      "RECHARGE COMPTEUR",
+      "CONSOMMATION ENERGIE"
+     ],
+     "compte": "60520000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "SODECI"
+     ],
+     "compte": "60510000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "FOURNITURE",
+      "BUREAU",
+      "CARNET",
+      "CACHET",
+      "IMPRESSION",
+      "STICKER",
+      "SOURIS",
+      "SCOTCH",
+      "PHOTOCOPIE",
+      "CLE OFFICE",
+      "LOGICIEL",
+      "LICENCE",
+      "ENVELOPPE"
+     ],
+     "compte": "60460000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "EPI",
+      "EXTINCTEUR",
+      "BALAIS",
+      "TRIANGLE DE SOL"
+     ],
+     "compte": "60430000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "COMMUNICATION",
+      "COMMUNCATION",
+      "COMMIUNICATION",
+      "COMMUNICAITON",
+      "WIFI"
+     ],
+     "compte": "61830000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "AFFICHE",
+      "AFFICHAGE"
+     ],
+     "compte": "62700000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "COMMISSION"
+     ],
+     "compte": "63220000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "WAVE",
+      "FRAIS DE TRANSFERT",
+      "FRAIS TRANSFERT",
+      "FRAIS DE RETRAIT",
+      "FRAIS BANCAIRE",
+      "COMMISSION BANCAIRE",
+      "AGIOS"
+     ],
+     "compte": "63100000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "APPROVISIONNEMENT",
+      "KIOSQUE"
+     ],
+     "compte": "60100000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "ACHAT"
+     ],
+     "compte": "60580000",
+     "sauf": []
+    }
+   ],
+   "categories": [
+    {
+     "mots": [
+      "STOCK",
+      "MATIERE PREMIERE"
+     ],
+     "compte": "60210000"
+    },
+    {
+     "mots": [
+      "GAZ"
+     ],
+     "compte": "60420000"
+    },
+    {
+     "mots": [
+      "CARBURANT"
+     ],
+     "compte": "60530000"
+    },
+    {
+     "mots": [
+      "EMBALLAGE"
+     ],
+     "compte": "60810000"
+    },
+    {
+     "mots": [
+      "ELECTRICITE"
+     ],
+     "compte": "60520000"
+    },
+    {
+     "mots": [
+      "FOURNITURE DE BUREAU"
+     ],
+     "compte": "60460000"
+    },
+    {
+     "mots": [
+      "LOYER"
+     ],
+     "compte": "62200000"
+    },
+    {
+     "mots": [
+      "NOURRITURE PERSONNEL"
+     ],
+     "compte": "63830000"
+    },
+    {
+     "mots": [
+      "TRANSPORT",
+      "EXPEDITION",
+      "COMMUNICATION"
+     ],
+     "compte": "61830000"
+    },
+    {
+     "mots": [
+      "MAIN D'OEUVRE",
+      "SALAIRE"
+     ],
+     "compte": "60570000"
+    },
+    {
+     "mots": [
+      "AMENAGEMENT",
+      "MATERIEL",
+      "MOBILIER"
+     ],
+     "compte": "60580000"
+    },
+    {
+     "mots": [
+      "COMMISSION"
+     ],
+     "compte": "63220000"
+    },
+    {
+     "mots": [
+      "FRAIS DE TRANSFERT",
+      "FRAIS TRANSFERT"
+     ],
+     "compte": "63100000"
+    }
+   ],
+   "taxes": [
+    {
+     "mots": [
+      "ARRANGEMENT"
+     ],
+     "compte": "65820000"
+    },
+    {
+     "mots": [
+      "ENREGISTREMENT",
+      "BAIL",
+      "FORMULAIRE",
+      "PLASTIFICATION"
+     ],
+     "compte": "64600000"
+    },
+    {
+     "mots": [
+      "TIMBRE"
+     ],
+     "compte": "64620000"
+    },
+    {
+     "mots": [
+      "TAXE PUBLICITAIRE",
+      "PUBLICITE"
+     ],
+     "compte": "64680000"
+    },
+    {
+     "mots": [
+      "PROCURATION"
+     ],
+     "compte": "63250000"
+    },
+    {
+     "mots": [
+      "ATC",
+      "GS1"
+     ],
+     "compte": "64120000"
+    },
+    {
+     "mots": [
+      "PATENTE",
+      "COTISATION",
+      "DGI",
+      "IMPOT",
+      "TAXE",
+      "VIGNETTE"
+     ],
+     "compte": "64120000"
+    }
+   ],
+   "immos": [
+    {
+     "mots": [
+      "MOTOS",
+      "SOLDE ACHAT MOTO"
+     ],
+     "compte": "24510000"
+    },
+    {
+     "mots": [
+      "MOTEUR",
+      "VEHICULE",
+      "CAMIONNETTE"
+     ],
+     "compte": "24510000"
+    },
+    {
+     "mots": [
+      "INFORMATIQUE",
+      "ORDINATEUR",
+      "IMPRIMANTE"
+     ],
+     "compte": "24410000"
+    },
+    {
+     "mots": [
+      "AMENAGEMENT",
+      "MACONNERIE",
+      "MENUISERIE",
+      "CONSTRUCTION",
+      "BATIMENT"
+     ],
+     "compte": "23800000"
+    }
+   ],
+   "banque": [
+    {
+     "mots": [
+      "LONACI",
+      "CLIENT",
+      "VERSE",
+      "REMISE",
+      "VIREMENT RECU",
+      "RECU DE",
+      "CHEQUE"
+     ],
+     "compte": "41110000",
+     "nature": "RECETTE"
+    },
+    {
+     "mots": [
+      "FRAIS",
+      "COMMISSION",
+      "AGIOS",
+      "TENUE DE COMPTE",
+      "COTISATION"
+     ],
+     "compte": "63100000",
+     "nature": "CHARGE"
+    },
+    {
+     "mots": [
+      "DGI",
+      "IMPOT",
+      "ITS",
+      "FISC"
+     ],
+     "compte": "44710000",
+     "nature": "CHARGE"
+    },
+    {
+     "mots": [
+      "CNPS",
+      "CNAPS"
+     ],
+     "compte": "43100000",
+     "nature": "CHARGE"
+    },
+    {
+     "mots": [
+      "SALAIRE",
+      "PAIE"
+     ],
+     "compte": "42200000",
+     "nature": "CHARGE"
+    },
+    {
+     "mots": [
+      "ELECTRICITE",
+      "CIE"
+     ],
+     "compte": "40110300",
+     "nature": "CHARGE"
+    },
+    {
+     "mots": [
+      "RETRAIT",
+      "ESPECES",
+      "VIREMENT EMIS",
+      "FOURNISSEUR",
+      "PAIEMENT"
+     ],
+     "compte": "40110000",
+     "nature": "CHARGE"
+    }
+   ],
+   "tiers": [
+    {
+     "compte": "401101",
+     "nom": "YAKRO",
+     "general": "40110000",
+     "ncc": "",
+     "type": "FOURNISSEUR"
+    },
+    {
+     "compte": "401103",
+     "nom": "CIE",
+     "general": "40110000",
+     "ncc": "",
+     "type": "FOURNISSEUR"
+    },
+    {
+     "compte": "401199",
+     "nom": "FOURNISSEURS DIVERS",
+     "general": "40110000",
+     "ncc": "",
+     "type": "FOURNISSEUR"
+    },
+    {
+     "compte": "411101",
+     "nom": "CAD COTE D'IVOIRE",
+     "general": "41110000",
+     "ncc": "2601174G",
+     "type": "CLIENT"
+    },
+    {
+     "compte": "411199",
+     "nom": "CLIENTS DIVERS",
+     "general": "41110000",
+     "ncc": "",
+     "type": "CLIENT"
+    }
+   ]
+  },
+  "REGLES_FKS": {
+   "dossier": "FKS INDUSTRIE",
+   "parametres": {
+    "version_regles": "2026.10.2",
+    "dossier": "FKS INDUSTRIE",
+    "compte_fournisseur": "40110000",
+    "tiers_fournisseur": "401199",
+    "compte_client": "41110000",
+    "tiers_client": "411101",
+    "compte_caisse": "57110000",
+    "compte_banque": "521100",
+    "compte_ventes": "70200000",
+    "compte_ventes_2": "70100000",
+    "compte_brut": "66100000",
+    "compte_transport": "66340000",
+    "compte_cnps_patronal": "66410000",
+    "compte_its_employeur": "64130000",
+    "compte_fdfp_charge": "64140000",
+    "compte_personnel": "42200000",
+    "compte_avances": "42110000",
+    "compte_cnps": "43100000",
+    "compte_its": "44720000",
+    "compte_fdfp": "44780000",
+    "compte_timbre": "44730000",
+    "compte_autres_taxes": "64620000",
+    "compte_frais_bancaires": "63100000",
+    "compte_produits_divers": "75800000",
+    "compte_charges_diverses": "65800000",
+    "compte_tva_collectee": "44310000",
+    "compte_tva_deductible": "44510000",
+    "compte_attente": "47180000",
+    "compte_proprietaire": "46210000",
+    "mode_achats": "miroir",
+    "mode_banque": "direct",
+    "ventilation_tva": "non",
+    "seuil_immobilisation": "250000",
+    "reglement_paie": "caisse",
+    "regle_tresorerie": "HORS",
+    "recettes_sans_facture": "HORS",
+    "date_min": "",
+    "date_max": "",
+    "modele_comptes": "8",
+    "taux_cnps_salarie": "6.3",
+    "cmu_salarie": "500",
+    "taux_cnps_retraite": "7.7",
+    "plafond_cnps": "70000",
+    "taux_pf": "5",
+    "taux_maternite": "0.75",
+    "taux_at": "3",
+    "cmu_patronale": "500",
+    "taux_its": "16",
+    "abattement_its": "12000",
+    "ricf_par_part": "5500",
+    "taux_its_employeur": "1.2",
+    "taux_fdfp": "1.6",
+    "code_ventes": "070",
+    "piece_ventes": "VE",
+    "code_achats": "060",
+    "piece_achats": "AC",
+    "code_caisse": "057",
+    "piece_caisse": "CA",
+    "code_banque": "052",
+    "piece_banque": "BQ",
+    "code_paie": "042",
+    "piece_paie": "PA",
+    "code_od": "090",
+    "piece_od": "OD"
+   },
+   "format_": {
+    "separateur": "TABULATION",
+    "fin_ligne": "RETOUR_CHARIOT",
+    "encodage": "cp1252",
+    "format_date": "jj/mm/aaaa",
+    "decimales": "2",
+    "sep_decimal": "VIRGULE",
+    "colonnes": "journal|date|piece|compte|tiers|libelle|debit|credit",
+    "entete": "non",
+    "longueur_libelle": "60",
+    "nom_fichier": "{n}-A-IMPORTER-{nom}-{code}.txt",
+    "creer_essais": "oui",
+    "creer_version_crlf": "oui",
+    "creer_classeur": "oui",
+    "creer_rapport": "oui",
+    "prefixe_fichier": ""
+   },
+   "journaux": [
+    {
+     "cle": "ventes",
+     "actif": "oui",
+     "code": "070",
+     "nom": "VENTES",
+     "prefixe": "VE",
+     "fichier": "{n}-A-IMPORTER-Ventes-{code}.txt"
+    },
+    {
+     "cle": "achats",
+     "actif": "oui",
+     "code": "060",
+     "nom": "ACHATS",
+     "prefixe": "AC",
+     "fichier": "{n}-A-IMPORTER-Achats-{code}.txt"
+    },
+    {
+     "cle": "caisse",
+     "actif": "oui",
+     "code": "057",
+     "nom": "CAISSE",
+     "prefixe": "CA",
+     "fichier": "{n}-A-IMPORTER-Caisse-{code}.txt"
+    },
+    {
+     "cle": "banque",
+     "actif": "oui",
+     "code": "052",
+     "nom": "BANQUE",
+     "prefixe": "BQ",
+     "fichier": "{n}-A-IMPORTER-Banque-{code}.txt"
+    },
+    {
+     "cle": "paie",
+     "actif": "oui",
+     "code": "042",
+     "nom": "PAIE",
+     "prefixe": "PA",
+     "fichier": "{n}-A-IMPORTER-Paie-{code}.txt"
+    },
+    {
+     "cle": "od",
+     "actif": "oui",
+     "code": "090",
+     "nom": "OPERATIONS DIVERSES",
+     "prefixe": "OD",
+     "fichier": "{n}-A-IMPORTER-OD-{code}.txt"
+    }
+   ],
+   "regles": [
+    {
+     "mots": [
+      "PARALLELISME",
+      "CONTRAVENTION",
+      "INFRACTION",
+      "AMENDE"
+     ],
+     "compte": "[HORS]",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "PRET",
+      "DON",
+      "SOUTIEN",
+      "CONDOLEANCES",
+      "SOINS",
+      "INSPECTION",
+      "MISSION",
+      "AIDE"
+     ],
+     "compte": "[HORS]",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "DJEBOTEAU",
+      "ENVOI A M",
+      "ENVOI POUR LE PROPRI",
+      "RETRAIT PROPRI",
+      "ENVOI PROPRI"
+     ],
+     "compte": "[PROPRIETAIRE]",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "AVANCE SUR SALAIRE",
+      "AVANCE SALAIRE",
+      "AVANCE SUR PAIE",
+      "AVANCE SUR LE SALAIRE"
+     ],
+     "compte": "[AVANCE]",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "VERSEMENT",
+      "DEPOT",
+      "DEPOT",
+      "RETRAIT",
+      "REMIS A",
+      "TRANSMIS",
+      "FOND DE CAISSE",
+      "FONDS DE CAISSE",
+      "ALIMENTATION CAISSE",
+      "TRANSFERT ORANGE",
+      "TRANSFERT WAVE",
+      "VIREMENT",
+      "ENVOI FONDS"
+     ],
+     "compte": "[TRESORERIE]",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "REPARAT",
+      "REPRATION",
+      "DEPANNAGE",
+      "DEPANAGE",
+      "VIDANGE",
+      "LAVAGE",
+      "PANNE",
+      "MOTEUR",
+      "COURROIE",
+      "BATTERIE",
+      "FEU",
+      "FEUX",
+      "CLIGNOTANT",
+      "ALTERNATEUR",
+      "ESSUIE",
+      "SOUDURE",
+      "POUBELLE",
+      "REVISION",
+      "ENTRETIEN",
+      "PIECE DE RECHANGE",
+      "VISITE TECHNIQUE",
+      "JANTE",
+      "PARE BRISE",
+      "AMORTISSEUR",
+      "SERRURE",
+      "CERURE",
+      "CYLINDRE",
+      "REMORQUAGE",
+      "POULIE",
+      "VENTILATEUR",
+      "DIAGNOSTIC",
+      "COLLAGE",
+      "TURBO",
+      "FREIN",
+      "EMBRAYAGE",
+      "SUSPENSION",
+      "CARROSSERIE"
+     ],
+     "compte": "62400000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "TRANSPORT",
+      "PEAGE",
+      "PARKING",
+      "STATIONNEMENT",
+      "EXPEDITION",
+      "COLIS",
+      "ENVOIS",
+      "YANGO",
+      "DEPLACEMENT",
+      "CHARGEMENT",
+      "LIVRAISON",
+      "REMISE DE FONDS",
+      "ENVOI",
+      "VOYAGE",
+      "DELEGATION"
+     ],
+     "compte": "61830000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "PATENTE",
+      "COTISATION",
+      "ENREGISTREMENT",
+      "FORMULAIRE DE CONTRAT",
+      "PROCURATION",
+      "PLASTIFICATION",
+      "VIGNETTE",
+      "DGI",
+      "IMPOT",
+      "TAXE",
+      "TIMBRE",
+      "ATC",
+      "GS1"
+     ],
+     "compte": "[IMPOSITION]",
+     "sauf": [
+      "TRANSPORT",
+      "PEAGE",
+      "DEPLACEMENT"
+     ]
+    },
+    {
+     "mots": [
+      "JOURNALIER",
+      "PAIE DES",
+      "MAIN D",
+      "TECHNICIEN",
+      "AFFUTAGE",
+      "MACON",
+      "MECANO",
+      "MECANICIEN"
+     ],
+     "compte": "60570000",
+     "sauf": [
+      "MACONNERIE",
+      "AMENAGEMENT",
+      "MENUISERIE",
+      "COMPTOIR",
+      "ETAGERE",
+      "INSTALLATION",
+      "PEINTURE"
+     ]
+    },
+    {
+     "mots": [
+      "SALAIRE",
+      "PRIME DE VENTE",
+      "GRATIFICATION"
+     ],
+     "compte": "[PAIE]",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "PNEU",
+      "BAGUETTE DE SOUDURE"
+     ],
+     "compte": "60580000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "POLICE"
+     ],
+     "compte": "61830000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "ASSURANCE",
+      "ASSSURANCE"
+     ],
+     "compte": "62500000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "LOYER",
+      "LOCATION"
+     ],
+     "compte": "62200000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "GAZ",
+      "B50",
+      "B38",
+      "B12"
+     ],
+     "compte": "60420000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "CARBURANT",
+      "ESSENCE",
+      "GASOIL",
+      "HUILE DE FREIN",
+      "HUILE MOTEUR"
+     ],
+     "compte": "60530000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "AMENAGEMENT",
+      "INSTALLATION",
+      "MACONNERIE",
+      "MENUISERIE",
+      "CONSTRUCTION",
+      "COMPTOIR",
+      "ETAGERE",
+      "PEINTURE",
+      "TUYAU",
+      "TOLE",
+      "MOULIN",
+      "MACHINE",
+      "MATERIEL",
+      "TABLE",
+      "TASSE",
+      "USTENSILES",
+      "PLAQUE",
+      "THERMOS",
+      "REFRIGERATEUR",
+      "GPS",
+      "CAMERA",
+      "MOTO",
+      "BALANCE",
+      "MEULES",
+      "BARRIQUE",
+      "ROULETTES",
+      "MULTIPRISE",
+      "SCEAUX",
+      "CACHE NEZ",
+      "BACHE",
+      "CLIM",
+      "ROBINET",
+      "SOUS COMPTEUR",
+      "ACCESSOIRES"
+     ],
+     "compte": "60580000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "CAFE",
+      "ACOMPTE",
+      "MATIERE PREMIERE"
+     ],
+     "compte": "60210000",
+     "sauf": [
+      "EMBALLAGE",
+      "SACHET EXPRESSO",
+      "CARNET DE RECU"
+     ]
+    },
+    {
+     "mots": [
+      "EMBALLAGE",
+      "CAPSULE",
+      "SACHET",
+      "CARTON",
+      "MAQUETTE",
+      "BOBINE",
+      "FIL DE COUTURE",
+      "SAC"
+     ],
+     "compte": "60810000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "NOURRITURE",
+      "SUCRE",
+      "PACKS D'EAU",
+      "PACK D'EAU",
+      "EAU EN SACHET",
+      "SPAGETTI",
+      "RIZ",
+      "PAIN",
+      "ATTIEKE",
+      "POISSON",
+      "VIANDE",
+      "ROGNON",
+      "BLONDS",
+      "COLLATION",
+      "LAIT EN POUDRE",
+      "RESTAURATION",
+      "GINGEMBRE",
+      "INFUSETTE",
+      "EPICE",
+      "ARTICLES ET PRODUITS"
+     ],
+     "compte": "63830000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "FACTURE CIE",
+      "ELECTRICITE",
+      "RECHARGE COMPTEUR",
+      "CONSOMMATION ENERGIE"
+     ],
+     "compte": "60520000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "SODECI"
+     ],
+     "compte": "60510000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "FOURNITURE",
+      "BUREAU",
+      "CARNET",
+      "CACHET",
+      "IMPRESSION",
+      "STICKER",
+      "SOURIS",
+      "SCOTCH",
+      "PHOTOCOPIE",
+      "CLE OFFICE",
+      "LOGICIEL",
+      "LICENCE",
+      "ENVELOPPE"
+     ],
+     "compte": "60460000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "EPI",
+      "EXTINCTEUR",
+      "BALAIS",
+      "TRIANGLE DE SOL"
+     ],
+     "compte": "60430000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "COMMUNICATION",
+      "COMMUNCATION",
+      "COMMIUNICATION",
+      "COMMUNICAITON",
+      "WIFI"
+     ],
+     "compte": "61830000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "AFFICHE",
+      "AFFICHAGE"
+     ],
+     "compte": "62700000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "COMMISSION"
+     ],
+     "compte": "63220000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "WAVE",
+      "FRAIS DE TRANSFERT",
+      "FRAIS TRANSFERT",
+      "FRAIS DE RETRAIT",
+      "FRAIS BANCAIRE",
+      "COMMISSION BANCAIRE",
+      "AGIOS"
+     ],
+     "compte": "63100000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "APPROVISIONNEMENT",
+      "KIOSQUE"
+     ],
+     "compte": "60100000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "ACHAT"
+     ],
+     "compte": "60580000",
+     "sauf": []
+    }
+   ],
+   "categories": [
+    {
+     "mots": [
+      "STOCK",
+      "MATIERE PREMIERE"
+     ],
+     "compte": "60210000"
+    },
+    {
+     "mots": [
+      "GAZ"
+     ],
+     "compte": "60420000"
+    },
+    {
+     "mots": [
+      "CARBURANT"
+     ],
+     "compte": "60530000"
+    },
+    {
+     "mots": [
+      "EMBALLAGE"
+     ],
+     "compte": "60810000"
+    },
+    {
+     "mots": [
+      "ELECTRICITE"
+     ],
+     "compte": "60520000"
+    },
+    {
+     "mots": [
+      "FOURNITURE DE BUREAU"
+     ],
+     "compte": "60460000"
+    },
+    {
+     "mots": [
+      "LOYER"
+     ],
+     "compte": "62200000"
+    },
+    {
+     "mots": [
+      "NOURRITURE PERSONNEL"
+     ],
+     "compte": "63830000"
+    },
+    {
+     "mots": [
+      "TRANSPORT",
+      "EXPEDITION",
+      "COMMUNICATION"
+     ],
+     "compte": "61830000"
+    },
+    {
+     "mots": [
+      "MAIN D'OEUVRE",
+      "SALAIRE"
+     ],
+     "compte": "60570000"
+    },
+    {
+     "mots": [
+      "AMENAGEMENT",
+      "MATERIEL",
+      "MOBILIER"
+     ],
+     "compte": "60580000"
+    },
+    {
+     "mots": [
+      "COMMISSION"
+     ],
+     "compte": "63220000"
+    },
+    {
+     "mots": [
+      "FRAIS DE TRANSFERT",
+      "FRAIS TRANSFERT"
+     ],
+     "compte": "63100000"
+    }
+   ],
+   "taxes": [
+    {
+     "mots": [
+      "ARRANGEMENT"
+     ],
+     "compte": "65820000"
+    },
+    {
+     "mots": [
+      "ENREGISTREMENT",
+      "BAIL",
+      "FORMULAIRE",
+      "PLASTIFICATION"
+     ],
+     "compte": "64600000"
+    },
+    {
+     "mots": [
+      "TIMBRE"
+     ],
+     "compte": "64620000"
+    },
+    {
+     "mots": [
+      "TAXE PUBLICITAIRE",
+      "PUBLICITE"
+     ],
+     "compte": "64680000"
+    },
+    {
+     "mots": [
+      "PROCURATION"
+     ],
+     "compte": "63250000"
+    },
+    {
+     "mots": [
+      "ATC",
+      "GS1"
+     ],
+     "compte": "64120000"
+    },
+    {
+     "mots": [
+      "PATENTE",
+      "COTISATION",
+      "DGI",
+      "IMPOT",
+      "TAXE",
+      "VIGNETTE"
+     ],
+     "compte": "64120000"
+    }
+   ],
+   "immos": [
+    {
+     "mots": [
+      "MOTOS",
+      "SOLDE ACHAT MOTO"
+     ],
+     "compte": "24510000"
+    },
+    {
+     "mots": [
+      "MOTEUR",
+      "VEHICULE",
+      "CAMIONNETTE"
+     ],
+     "compte": "24510000"
+    },
+    {
+     "mots": [
+      "INFORMATIQUE",
+      "ORDINATEUR",
+      "IMPRIMANTE"
+     ],
+     "compte": "24410000"
+    },
+    {
+     "mots": [
+      "AMENAGEMENT",
+      "MACONNERIE",
+      "MENUISERIE",
+      "CONSTRUCTION",
+      "BATIMENT"
+     ],
+     "compte": "23800000"
+    }
+   ],
+   "banque": [
+    {
+     "mots": [
+      "LONACI",
+      "CLIENT",
+      "VERSE",
+      "REMISE",
+      "VIREMENT RECU",
+      "RECU DE",
+      "CHEQUE"
+     ],
+     "compte": "41110000",
+     "nature": "RECETTE"
+    },
+    {
+     "mots": [
+      "FRAIS",
+      "COMMISSION",
+      "AGIOS",
+      "TENUE DE COMPTE",
+      "COTISATION"
+     ],
+     "compte": "63100000",
+     "nature": "CHARGE"
+    },
+    {
+     "mots": [
+      "DGI",
+      "IMPOT",
+      "ITS",
+      "FISC"
+     ],
+     "compte": "44710000",
+     "nature": "CHARGE"
+    },
+    {
+     "mots": [
+      "CNPS",
+      "CNAPS"
+     ],
+     "compte": "43100000",
+     "nature": "CHARGE"
+    },
+    {
+     "mots": [
+      "SALAIRE",
+      "PAIE"
+     ],
+     "compte": "42200000",
+     "nature": "CHARGE"
+    },
+    {
+     "mots": [
+      "ELECTRICITE",
+      "CIE"
+     ],
+     "compte": "40110300",
+     "nature": "CHARGE"
+    },
+    {
+     "mots": [
+      "RETRAIT",
+      "ESPECES",
+      "VIREMENT EMIS",
+      "FOURNISSEUR",
+      "PAIEMENT"
+     ],
+     "compte": "40110000",
+     "nature": "CHARGE"
+    }
+   ],
+   "tiers": [
+    {
+     "compte": "401101",
+     "nom": "YAKRO",
+     "general": "40110000",
+     "ncc": "",
+     "type": "FOURNISSEUR"
+    },
+    {
+     "compte": "401103",
+     "nom": "CIE",
+     "general": "40110000",
+     "ncc": "",
+     "type": "FOURNISSEUR"
+    },
+    {
+     "compte": "401199",
+     "nom": "FOURNISSEURS DIVERS",
+     "general": "40110000",
+     "ncc": "",
+     "type": "FOURNISSEUR"
+    },
+    {
+     "compte": "411101",
+     "nom": "CAD COTE D'IVOIRE",
+     "general": "41110000",
+     "ncc": "2601174G",
+     "type": "CLIENT"
+    },
+    {
+     "compte": "411199",
+     "nom": "CLIENTS DIVERS",
+     "general": "41110000",
+     "ncc": "",
+     "type": "CLIENT"
+    }
+   ]
+  },
+  "REGLES_JCHARNO": {
+   "dossier": "J-CHARNO INC",
+   "parametres": {
+    "version_regles": "2026.10.2",
+    "dossier": "J-CHARNO INC",
+    "compte_fournisseur": "40110000",
+    "tiers_fournisseur": "401199",
+    "compte_client": "41110000",
+    "tiers_client": "411101",
+    "compte_caisse": "57110000",
+    "compte_banque": "521100",
+    "compte_ventes": "70200000",
+    "compte_ventes_2": "70100000",
+    "compte_brut": "66100000",
+    "compte_transport": "66340000",
+    "compte_cnps_patronal": "66410000",
+    "compte_its_employeur": "64130000",
+    "compte_fdfp_charge": "64140000",
+    "compte_personnel": "42200000",
+    "compte_avances": "42110000",
+    "compte_cnps": "43100000",
+    "compte_its": "44720000",
+    "compte_fdfp": "44780000",
+    "compte_timbre": "44730000",
+    "compte_autres_taxes": "64620000",
+    "compte_frais_bancaires": "63100000",
+    "compte_produits_divers": "75800000",
+    "compte_charges_diverses": "65800000",
+    "compte_tva_collectee": "44310000",
+    "compte_tva_deductible": "44510000",
+    "compte_attente": "47180000",
+    "compte_proprietaire": "46210000",
+    "mode_achats": "miroir",
+    "mode_banque": "direct",
+    "ventilation_tva": "non",
+    "seuil_immobilisation": "250000",
+    "reglement_paie": "caisse",
+    "regle_tresorerie": "OD",
+    "recettes_sans_facture": "ATTENTE",
+    "date_min": "",
+    "date_max": "",
+    "modele_comptes": "8",
+    "taux_cnps_salarie": "6.3",
+    "cmu_salarie": "500",
+    "taux_cnps_retraite": "7.7",
+    "plafond_cnps": "70000",
+    "taux_pf": "5",
+    "taux_maternite": "0.75",
+    "taux_at": "3",
+    "cmu_patronale": "500",
+    "taux_its": "16",
+    "abattement_its": "12000",
+    "ricf_par_part": "5500",
+    "taux_its_employeur": "1.2",
+    "taux_fdfp": "1.6",
+    "code_ventes": "070",
+    "piece_ventes": "VE",
+    "code_achats": "060",
+    "piece_achats": "AC",
+    "code_caisse": "057",
+    "piece_caisse": "CA",
+    "code_banque": "052",
+    "piece_banque": "BQ",
+    "code_paie": "042",
+    "piece_paie": "PA",
+    "code_od": "090",
+    "piece_od": "OD"
+   },
+   "format_": {
+    "separateur": "TABULATION",
+    "fin_ligne": "RETOUR_CHARIOT",
+    "encodage": "cp1252",
+    "format_date": "jj/mm/aaaa",
+    "decimales": "2",
+    "sep_decimal": "VIRGULE",
+    "colonnes": "journal|date|piece|compte|tiers|libelle|debit|credit",
+    "entete": "non",
+    "longueur_libelle": "60",
+    "nom_fichier": "{n}-A-IMPORTER-{nom}-{code}.txt",
+    "creer_essais": "oui",
+    "creer_version_crlf": "oui",
+    "creer_classeur": "oui",
+    "creer_rapport": "oui",
+    "prefixe_fichier": ""
+   },
+   "journaux": [
+    {
+     "cle": "ventes",
+     "actif": "oui",
+     "code": "070",
+     "nom": "VENTES",
+     "prefixe": "VE",
+     "fichier": "{n}-A-IMPORTER-Ventes-{code}.txt"
+    },
+    {
+     "cle": "achats",
+     "actif": "oui",
+     "code": "060",
+     "nom": "ACHATS",
+     "prefixe": "AC",
+     "fichier": "{n}-A-IMPORTER-Achats-{code}.txt"
+    },
+    {
+     "cle": "caisse",
+     "actif": "oui",
+     "code": "057",
+     "nom": "CAISSE",
+     "prefixe": "CA",
+     "fichier": "{n}-A-IMPORTER-Caisse-{code}.txt"
+    },
+    {
+     "cle": "banque",
+     "actif": "oui",
+     "code": "052",
+     "nom": "BANQUE",
+     "prefixe": "BQ",
+     "fichier": "{n}-A-IMPORTER-Banque-{code}.txt"
+    },
+    {
+     "cle": "paie",
+     "actif": "oui",
+     "code": "042",
+     "nom": "PAIE",
+     "prefixe": "PA",
+     "fichier": "{n}-A-IMPORTER-Paie-{code}.txt"
+    },
+    {
+     "cle": "od",
+     "actif": "oui",
+     "code": "090",
+     "nom": "OPERATIONS DIVERSES",
+     "prefixe": "OD",
+     "fichier": "{n}-A-IMPORTER-OD-{code}.txt"
+    }
+   ],
+   "regles": [
+    {
+     "mots": [
+      "PARALLELISME",
+      "CONTRAVENTION",
+      "INFRACTION",
+      "AMENDE"
+     ],
+     "compte": "[HORS]",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "PRET",
+      "DON",
+      "SOUTIEN",
+      "CONDOLEANCES",
+      "SOINS",
+      "INSPECTION",
+      "MISSION",
+      "AIDE"
+     ],
+     "compte": "[HORS]",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "DJEBOTEAU",
+      "ENVOI A M",
+      "ENVOI POUR LE PROPRI",
+      "RETRAIT PROPRI",
+      "ENVOI PROPRI"
+     ],
+     "compte": "[PROPRIETAIRE]",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "AVANCE SUR SALAIRE",
+      "AVANCE SALAIRE",
+      "AVANCE SUR PAIE",
+      "AVANCE SUR LE SALAIRE"
+     ],
+     "compte": "[AVANCE]",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "VERSEMENT",
+      "DEPOT",
+      "DEPOT",
+      "RETRAIT",
+      "REMIS A",
+      "TRANSMIS",
+      "FOND DE CAISSE",
+      "FONDS DE CAISSE",
+      "ALIMENTATION CAISSE",
+      "TRANSFERT ORANGE",
+      "TRANSFERT WAVE",
+      "VIREMENT",
+      "ENVOI FONDS"
+     ],
+     "compte": "[TRESORERIE]",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "REPARAT",
+      "REPRATION",
+      "DEPANNAGE",
+      "DEPANAGE",
+      "VIDANGE",
+      "LAVAGE",
+      "PANNE",
+      "MOTEUR",
+      "COURROIE",
+      "BATTERIE",
+      "FEU",
+      "FEUX",
+      "CLIGNOTANT",
+      "ALTERNATEUR",
+      "ESSUIE",
+      "SOUDURE",
+      "POUBELLE",
+      "REVISION",
+      "ENTRETIEN",
+      "PIECE DE RECHANGE",
+      "VISITE TECHNIQUE",
+      "JANTE",
+      "PARE BRISE",
+      "AMORTISSEUR",
+      "SERRURE",
+      "CERURE",
+      "CYLINDRE",
+      "REMORQUAGE",
+      "POULIE",
+      "VENTILATEUR",
+      "DIAGNOSTIC",
+      "COLLAGE",
+      "TURBO",
+      "FREIN",
+      "EMBRAYAGE",
+      "SUSPENSION",
+      "CARROSSERIE"
+     ],
+     "compte": "62400000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "TRANSPORT",
+      "PEAGE",
+      "PARKING",
+      "STATIONNEMENT",
+      "EXPEDITION",
+      "COLIS",
+      "ENVOIS",
+      "YANGO",
+      "DEPLACEMENT",
+      "CHARGEMENT",
+      "LIVRAISON",
+      "REMISE DE FONDS",
+      "ENVOI",
+      "VOYAGE",
+      "DELEGATION"
+     ],
+     "compte": "61830000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "PATENTE",
+      "COTISATION",
+      "ENREGISTREMENT",
+      "FORMULAIRE DE CONTRAT",
+      "PROCURATION",
+      "PLASTIFICATION",
+      "VIGNETTE",
+      "DGI",
+      "IMPOT",
+      "TAXE",
+      "TIMBRE",
+      "ATC",
+      "GS1"
+     ],
+     "compte": "[IMPOSITION]",
+     "sauf": [
+      "TRANSPORT",
+      "PEAGE",
+      "DEPLACEMENT"
+     ]
+    },
+    {
+     "mots": [
+      "JOURNALIER",
+      "PAIE DES",
+      "MAIN D",
+      "TECHNICIEN",
+      "AFFUTAGE",
+      "MACON",
+      "MECANO",
+      "MECANICIEN"
+     ],
+     "compte": "60570000",
+     "sauf": [
+      "MACONNERIE",
+      "AMENAGEMENT",
+      "MENUISERIE",
+      "COMPTOIR",
+      "ETAGERE",
+      "INSTALLATION",
+      "PEINTURE"
+     ]
+    },
+    {
+     "mots": [
+      "SALAIRE",
+      "PRIME DE VENTE",
+      "GRATIFICATION"
+     ],
+     "compte": "[PAIE]",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "PNEU",
+      "BAGUETTE DE SOUDURE"
+     ],
+     "compte": "60580000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "POLICE"
+     ],
+     "compte": "61830000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "ASSURANCE",
+      "ASSSURANCE"
+     ],
+     "compte": "62500000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "LOYER",
+      "LOCATION"
+     ],
+     "compte": "62200000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "GAZ",
+      "B50",
+      "B38",
+      "B12"
+     ],
+     "compte": "60420000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "CARBURANT",
+      "ESSENCE",
+      "GASOIL",
+      "HUILE DE FREIN",
+      "HUILE MOTEUR"
+     ],
+     "compte": "60530000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "AMENAGEMENT",
+      "INSTALLATION",
+      "MACONNERIE",
+      "MENUISERIE",
+      "CONSTRUCTION",
+      "COMPTOIR",
+      "ETAGERE",
+      "PEINTURE",
+      "TUYAU",
+      "TOLE",
+      "MOULIN",
+      "MACHINE",
+      "MATERIEL",
+      "TABLE",
+      "TASSE",
+      "USTENSILES",
+      "PLAQUE",
+      "THERMOS",
+      "REFRIGERATEUR",
+      "GPS",
+      "CAMERA",
+      "MOTO",
+      "BALANCE",
+      "MEULES",
+      "BARRIQUE",
+      "ROULETTES",
+      "MULTIPRISE",
+      "SCEAUX",
+      "CACHE NEZ",
+      "BACHE",
+      "CLIM",
+      "ROBINET",
+      "SOUS COMPTEUR",
+      "ACCESSOIRES"
+     ],
+     "compte": "60580000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "CAFE",
+      "ACOMPTE",
+      "MATIERE PREMIERE"
+     ],
+     "compte": "60210000",
+     "sauf": [
+      "EMBALLAGE",
+      "SACHET EXPRESSO",
+      "CARNET DE RECU"
+     ]
+    },
+    {
+     "mots": [
+      "EMBALLAGE",
+      "CAPSULE",
+      "SACHET",
+      "CARTON",
+      "MAQUETTE",
+      "BOBINE",
+      "FIL DE COUTURE",
+      "SAC"
+     ],
+     "compte": "60810000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "NOURRITURE",
+      "SUCRE",
+      "PACKS D'EAU",
+      "PACK D'EAU",
+      "EAU EN SACHET",
+      "SPAGETTI",
+      "RIZ",
+      "PAIN",
+      "ATTIEKE",
+      "POISSON",
+      "VIANDE",
+      "ROGNON",
+      "BLONDS",
+      "COLLATION",
+      "LAIT EN POUDRE",
+      "RESTAURATION",
+      "GINGEMBRE",
+      "INFUSETTE",
+      "EPICE",
+      "ARTICLES ET PRODUITS"
+     ],
+     "compte": "63830000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "FACTURE CIE",
+      "ELECTRICITE",
+      "RECHARGE COMPTEUR",
+      "CONSOMMATION ENERGIE"
+     ],
+     "compte": "60520000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "SODECI"
+     ],
+     "compte": "60510000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "FOURNITURE",
+      "BUREAU",
+      "CARNET",
+      "CACHET",
+      "IMPRESSION",
+      "STICKER",
+      "SOURIS",
+      "SCOTCH",
+      "PHOTOCOPIE",
+      "CLE OFFICE",
+      "LOGICIEL",
+      "LICENCE",
+      "ENVELOPPE"
+     ],
+     "compte": "60460000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "EPI",
+      "EXTINCTEUR",
+      "BALAIS",
+      "TRIANGLE DE SOL"
+     ],
+     "compte": "60430000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "COMMUNICATION",
+      "COMMUNCATION",
+      "COMMIUNICATION",
+      "COMMUNICAITON",
+      "WIFI"
+     ],
+     "compte": "61830000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "AFFICHE",
+      "AFFICHAGE"
+     ],
+     "compte": "62700000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "COMMISSION"
+     ],
+     "compte": "63220000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "WAVE",
+      "FRAIS DE TRANSFERT",
+      "FRAIS TRANSFERT",
+      "FRAIS DE RETRAIT",
+      "FRAIS BANCAIRE",
+      "COMMISSION BANCAIRE",
+      "AGIOS"
+     ],
+     "compte": "63100000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "APPROVISIONNEMENT",
+      "KIOSQUE"
+     ],
+     "compte": "60100000",
+     "sauf": []
+    },
+    {
+     "mots": [
+      "ACHAT"
+     ],
+     "compte": "60580000",
+     "sauf": []
+    }
+   ],
+   "categories": [
+    {
+     "mots": [
+      "STOCK",
+      "MATIERE PREMIERE"
+     ],
+     "compte": "60210000"
+    },
+    {
+     "mots": [
+      "GAZ"
+     ],
+     "compte": "60420000"
+    },
+    {
+     "mots": [
+      "CARBURANT"
+     ],
+     "compte": "60530000"
+    },
+    {
+     "mots": [
+      "EMBALLAGE"
+     ],
+     "compte": "60810000"
+    },
+    {
+     "mots": [
+      "ELECTRICITE"
+     ],
+     "compte": "60520000"
+    },
+    {
+     "mots": [
+      "FOURNITURE DE BUREAU"
+     ],
+     "compte": "60460000"
+    },
+    {
+     "mots": [
+      "LOYER"
+     ],
+     "compte": "62200000"
+    },
+    {
+     "mots": [
+      "NOURRITURE PERSONNEL"
+     ],
+     "compte": "63830000"
+    },
+    {
+     "mots": [
+      "TRANSPORT",
+      "EXPEDITION",
+      "COMMUNICATION"
+     ],
+     "compte": "61830000"
+    },
+    {
+     "mots": [
+      "MAIN D'OEUVRE",
+      "SALAIRE"
+     ],
+     "compte": "60570000"
+    },
+    {
+     "mots": [
+      "AMENAGEMENT",
+      "MATERIEL",
+      "MOBILIER"
+     ],
+     "compte": "60580000"
+    },
+    {
+     "mots": [
+      "COMMISSION"
+     ],
+     "compte": "63220000"
+    },
+    {
+     "mots": [
+      "FRAIS DE TRANSFERT",
+      "FRAIS TRANSFERT"
+     ],
+     "compte": "63100000"
+    }
+   ],
+   "taxes": [
+    {
+     "mots": [
+      "ARRANGEMENT"
+     ],
+     "compte": "65820000"
+    },
+    {
+     "mots": [
+      "ENREGISTREMENT",
+      "BAIL",
+      "FORMULAIRE",
+      "PLASTIFICATION"
+     ],
+     "compte": "64600000"
+    },
+    {
+     "mots": [
+      "TIMBRE"
+     ],
+     "compte": "64620000"
+    },
+    {
+     "mots": [
+      "TAXE PUBLICITAIRE",
+      "PUBLICITE"
+     ],
+     "compte": "64680000"
+    },
+    {
+     "mots": [
+      "PROCURATION"
+     ],
+     "compte": "63250000"
+    },
+    {
+     "mots": [
+      "ATC",
+      "GS1"
+     ],
+     "compte": "64120000"
+    },
+    {
+     "mots": [
+      "PATENTE",
+      "COTISATION",
+      "DGI",
+      "IMPOT",
+      "TAXE",
+      "VIGNETTE"
+     ],
+     "compte": "64120000"
+    }
+   ],
+   "immos": [
+    {
+     "mots": [
+      "MOTOS",
+      "SOLDE ACHAT MOTO"
+     ],
+     "compte": "24510000"
+    },
+    {
+     "mots": [
+      "MOTEUR",
+      "VEHICULE",
+      "CAMIONNETTE"
+     ],
+     "compte": "24510000"
+    },
+    {
+     "mots": [
+      "INFORMATIQUE",
+      "ORDINATEUR",
+      "IMPRIMANTE"
+     ],
+     "compte": "24410000"
+    },
+    {
+     "mots": [
+      "AMENAGEMENT",
+      "MACONNERIE",
+      "MENUISERIE",
+      "CONSTRUCTION",
+      "BATIMENT"
+     ],
+     "compte": "23800000"
+    }
+   ],
+   "banque": [
+    {
+     "mots": [
+      "LONACI",
+      "CLIENT",
+      "VERSE",
+      "REMISE",
+      "VIREMENT RECU",
+      "RECU DE",
+      "CHEQUE"
+     ],
+     "compte": "41110000",
+     "nature": "RECETTE"
+    },
+    {
+     "mots": [
+      "FRAIS",
+      "COMMISSION",
+      "AGIOS",
+      "TENUE DE COMPTE",
+      "COTISATION"
+     ],
+     "compte": "63100000",
+     "nature": "CHARGE"
+    },
+    {
+     "mots": [
+      "DGI",
+      "IMPOT",
+      "ITS",
+      "FISC"
+     ],
+     "compte": "44710000",
+     "nature": "CHARGE"
+    },
+    {
+     "mots": [
+      "CNPS",
+      "CNAPS"
+     ],
+     "compte": "43100000",
+     "nature": "CHARGE"
+    },
+    {
+     "mots": [
+      "SALAIRE",
+      "PAIE"
+     ],
+     "compte": "42200000",
+     "nature": "CHARGE"
+    },
+    {
+     "mots": [
+      "ELECTRICITE",
+      "CIE"
+     ],
+     "compte": "40110300",
+     "nature": "CHARGE"
+    },
+    {
+     "mots": [
+      "RETRAIT",
+      "ESPECES",
+      "VIREMENT EMIS",
+      "FOURNISSEUR",
+      "PAIEMENT"
+     ],
+     "compte": "40110000",
+     "nature": "CHARGE"
+    }
+   ],
+   "tiers": [
+    {
+     "compte": "401101",
+     "nom": "YAKRO",
+     "general": "40110000",
+     "ncc": "",
+     "type": "FOURNISSEUR"
+    },
+    {
+     "compte": "401103",
+     "nom": "CIE",
+     "general": "40110000",
+     "ncc": "",
+     "type": "FOURNISSEUR"
+    },
+    {
+     "compte": "401199",
+     "nom": "FOURNISSEURS DIVERS",
+     "general": "40110000",
+     "ncc": "",
+     "type": "FOURNISSEUR"
+    },
+    {
+     "compte": "411101",
+     "nom": "CAD COTE D'IVOIRE",
+     "general": "41110000",
+     "ncc": "2601174G",
+     "type": "CLIENT"
+    },
+    {
+     "compte": "411199",
+     "nom": "CLIENTS DIVERS",
+     "general": "41110000",
+     "ncc": "",
+     "type": "CLIENT"
+    }
+   ]
+  }
+ }
+}

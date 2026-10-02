@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outil JOURNAUX SAGE — version en ligne</title>
+<style>
+  :root{--bleu:#1f3864;--bleu2:#2f5597;--or:#c9a227;--vert:#1e7b45;--rouge:#b3261e;--gris:#f2f4f8}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Segoe UI,system-ui,Roboto,Arial,sans-serif;color:#1a1a1a;background:#eef1f6}
+  header{background:var(--bleu);color:#fff;padding:16px 22px;display:flex;justify-content:space-between;
+         align-items:center;gap:14px;flex-wrap:wrap}
+  header h1{margin:0;font-size:19px}
+  header p{margin:3px 0 0;font-size:12.5px;opacity:.85}
+  header a{color:#ffe9a8;font-size:12.5px}
+  .page{max-width:1200px;margin:0 auto;padding:16px 14px 70px}
+  .carte{background:#fff;border-radius:10px;box-shadow:0 1px 6px rgba(20,30,60,.10);padding:16px;margin-bottom:14px}
+  .carte h2{margin:0 0 10px;font-size:15.5px;color:var(--bleu);display:flex;justify-content:space-between;
+            align-items:center;gap:10px;flex-wrap:wrap}
+  #zone{border:2.5px dashed var(--bleu2);border-radius:12px;padding:26px 18px;text-align:center;
+        background:#fbfcfe;cursor:pointer}
+  #zone.sur{background:#eaf0fb;border-color:var(--or)}
+  #zone b{font-size:15.5px;color:var(--bleu2)}
+  #zone span{display:block;font-size:12.5px;color:#555;margin-top:5px}
+  .bouton{background:var(--bleu);color:#fff;border:0;border-radius:8px;padding:10px 18px;font-size:14px;cursor:pointer}
+  .bouton:hover{background:var(--bleu2)}
+  .bouton.or{background:var(--or);color:#2b2b2b;font-weight:600}
+  .bouton.petit{padding:6px 12px;font-size:12.5px}
+  .bouton[disabled]{opacity:.45;cursor:not-allowed}
+  .petit{font-size:12.5px;color:#5b6478}
+  table{border-collapse:collapse;width:100%;font-size:12.5px}
+  th{background:var(--bleu);color:#fff;text-align:left;padding:6px 8px;position:sticky;top:0;z-index:1}
+  td{border-bottom:1px solid #e6e9f0;padding:4px 7px}
+  tr:nth-child(even) td{background:#fafbfe}
+  .debit{text-align:right;color:var(--rouge);white-space:nowrap}
+  .credit{text-align:right;color:var(--vert);white-space:nowrap}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  input.compte,input.champ,select.compte{font:12px monospace;border:1px solid #cbd3e1;border-radius:4px;
+        padding:3px 5px;background:#fff}
+  input.champ{text-align:right}
+  .onglets{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .onglet{padding:7px 13px;border-radius:8px;background:#e9edf5;cursor:pointer;font-size:13px;border:0}
+  .onglet.actif{background:var(--bleu);color:#fff;font-weight:600}
+  .grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+  .kpi{background:var(--gris);border-radius:9px;padding:10px;border-left:4px solid var(--bleu2)}
+  .kpi b{display:block;font-size:18px;color:var(--bleu);margin-top:3px}
+  .kpi span{font-size:11.5px;color:#56607a;text-transform:uppercase;letter-spacing:.3px}
+  .kpi.ok{border-color:var(--vert)}.kpi.ko{border-color:var(--rouge)}
+  .etiquette{display:inline-block;padding:2px 7px;border-radius:20px;font-size:11px;background:#e6ebf7;color:var(--bleu)}
+  .etiquette.vert{background:#e4f5ea;color:var(--vert)}.etiquette.rouge{background:#fde7e6;color:var(--rouge)}
+  .etiquette.or{background:#fdf3d7;color:#8a6d00}
+  .alerte{background:#fff8e6;border-left:4px solid var(--or);padding:8px 11px;border-radius:6px;
+          margin-bottom:6px;font-size:12.5px}
+  .scroll{max-height:520px;overflow:auto;border:1px solid #e6e9f0;border-radius:8px}
+  .fic{background:#eef2fa;border-radius:8px;padding:7px 10px;font-size:12.5px;display:flex;gap:8px;align-items:center}
+  .fichiers{display:flex;flex-wrap:wrap;gap:7px}
+  code{background:#f0f2f7;padding:1px 5px;border-radius:4px;font-size:11.5px}
+  textarea{width:100%;font:11.5px/1.45 monospace;border:1px solid #cbd3e1;border-radius:6px;padding:6px}
+  .masque{display:none}
+  .lien{color:var(--bleu2);text-decoration:none}.lien:hover{text-decoration:underline}
+  .bandeau{background:#e8f0ff;border-left:4px solid var(--bleu2);padding:9px 12px;border-radius:6px;font-size:12.5px;margin-bottom:12px}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Outil JOURNAUX SAGE — version en ligne</h1>
+    <p>caisse · factures FNE · paie · relevés bancaires → journaux SYSCOHADA prêts pour Sage 100 ·
+       tout se passe dans votre navigateur, aucun fichier n'est envoyé</p>
+  </div>
+  <a href="https://github.com/doregoservices/outil-journaux-sage" target="_blank">voir le dépôt GitHub</a>
+</header>
+
+<div class="page">
+  <div class="carte">
+    <div id="bandeauLib" class="bandeau masque"></div>
+    <div id="zone">
+      <b>Déposez ici vos fichiers</b>
+      <span>ou cliquez pour les choisir · plusieurs à la fois : caisse (Excel/CSV), factures FNE (PDF ou Excel),
+        bulletins de paie (PDF ou modèle DGI), relevés bancaires (PDF/Excel/CSV)</span>
+    </div>
+    <input type="file" id="choix" multiple class="masque">
+    <div style="margin-top:12px;display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap">
+      <label class="petit">Profil de règles<br>
+        <select id="profil" class="compte" style="width:210px"></select></label>
+      <label class="petit">Écritures du<br><input type="date" id="dmin" class="compte" style="width:140px"></label>
+      <label class="petit">au<br><input type="date" id="dmax" class="compte" style="width:140px"></label>
+      <button class="bouton" id="btnAnalyser" disabled>Analyser les fichiers</button>
+      <span class="petit" id="etat"></span>
+    </div>
+    <div id="ficlist" class="fichiers" style="margin-top:10px"></div>
+  </div>
+
+  <div class="carte">
+    <h2>Réglages — journaux et format
+      <span><button class="onglet" id="btnRegl">afficher / masquer</button>
+      <button class="onglet" id="btnExportRegl">exporter mes règles</button>
+      <button class="onglet" id="btnImportRegl">importer des règles</button></span></h2>
+    <div id="reglages" class="masque">
+      <p class="petit">Tout est modifiable : cochez les journaux à produire, changez codes, noms, noms de
+        fichiers, et le format d'import de A à Z. Les règles d'affectation s'écrivent une par ligne :
+        <code>MOTS-CLÉS | COMPTE | À-EXCLURE</code>. Cliquez « Appliquer » pour relancer l'analyse.</p>
+      <div class="scroll"><table id="tJournaux"></table></div>
+      <h3 class="petit" style="color:#1f3864;margin:14px 0 6px">FORMAT D'IMPORT</h3>
+      <div id="tFormat" class="grille"></div>
+      <h3 class="petit" style="color:#1f3864;margin:14px 0 6px">PARAMÈTRES DU DOSSIER ET BARÈME DE PAIE</h3>
+      <div id="tParams" class="grille"></div>
+      <div class="grille" style="margin-top:12px">
+        <label class="petit">Règles d'affectation (une par ligne)<br><textarea id="txRegles" rows="12"></textarea></label>
+        <label class="petit">Impôts et taxes<br><textarea id="txTaxes" rows="12"></textarea></label>
+      </div>
+      <div class="grille" style="margin-top:10px">
+        <label class="petit">Immobilisations (classe 2)<br><textarea id="txImmos" rows="7"></textarea></label>
+        <label class="petit">Relevé bancaire<br><textarea id="txBanque" rows="7"></textarea></label>
+      </div>
+      <div class="grille" style="margin-top:10px">
+        <label class="petit">Colonne COMPTE du fichier caisse<br><textarea id="txCategories" rows="7"></textarea></label>
+        <label class="petit">Comptes tiers<br><textarea id="txTiers" rows="7"></textarea></label>
+      </div>
+      <div style="margin-top:10px">
+        <button class="bouton or" id="btnAppliquer">Appliquer et relancer</button>
+        <button class="onglet" id="btnReset">Revenir au profil d'origine</button>
+        <span class="petit" id="etatReglages" style="margin-left:8px"></span>
+      </div>
+    </div>
+  </div>
+
+  <div id="resume" class="carte masque">
+    <h2>1 · Ce que l'outil a reconnu</h2>
+    <div class="grille" id="kpis"></div>
+    <div id="alertes" style="margin-top:12px"></div>
+  </div>
+
+  <div id="blocjournaux" class="carte masque">
+    <h2>2 · Les journaux qui seront produits</h2>
+    <div class="scroll"><table id="tstats"></table></div>
+    <p class="petit" style="margin-top:6px">Les lignes marquées « à confirmer » sont écrites dans le compte
+      d'attente : corrigez-les dans l'onglet « À confirmer » avant de générer.</p>
+  </div>
+
+  <div id="blocdetail" class="carte masque">
+    <h2>3 · Vérifier et corriger ligne par ligne</h2>
+    <div class="onglets" id="onglets"></div>
+    <div id="tables"></div>
+  </div>
+
+  <div id="blocgener" class="carte masque">
+    <h2>4 · Générer</h2>
+    <button class="bouton or" id="btnGener">Générer les journaux</button>
+    <button class="bouton" id="btnZip">Tout télécharger (.zip)</button>
+    <span class="petit" id="etatGener" style="margin-left:10px"></span>
+    <div id="listeFichiers" style="margin-top:12px"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="moteur.js"></script>
+<script src="journaux.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

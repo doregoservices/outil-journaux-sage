@@ -150,7 +150,7 @@ def ecrire_tout(sortie, res, regles, blocage=None):
                    "Pièces déséquilibrées"])
         for c in ws[1]:
             c.font, c.fill = t, r
-        noms = {regles.code(j): j["nom"] for j in regles.journaux.values()}
+        noms = {j["code"]: j["nom"] for j in regles.journaux.values()}
         for s in res["stats"]:
             ws.append([noms.get(s["journal"], s["journal"]), s["journal"], s["pieces"], s["lignes"],
                        s["debit"], s["credit"], s["ecart"], s["ko"]])
@@ -252,7 +252,7 @@ def lisez_moi(sortie, res, regles, nom_dossier="", fichiers=()):
                "(doublons).",
                "   4. En cas de refus, essayez la version du dossier AUTRES/version_CRLF.",
                "", "Les journaux de ce lot", "-" * 96]
-    noms = {regles.code(j): j["nom"] for j in regles.journaux.values()}
+    noms = {j["code"]: j["nom"] for j in regles.journaux.values()}
     for s in res["stats"]:
         lignes.append("   %s (%s) : %d pièces, %s F au débit = %s F au crédit (écart %.2f)"
                       % (noms.get(s["journal"], s["journal"]), s["journal"], s["pieces"], f(s["debit"]),
